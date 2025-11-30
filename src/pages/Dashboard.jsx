@@ -15,9 +15,6 @@ export default function Dashboard({ expanded }) {
     status: "Ativo",
   });
 
-  // Modal de confirmação
- // const [confirmarSaida, setConfirmarSaida] = useState(false);
-
   // 🔵 Buscar usuários quando abrir a página
   useEffect(() => {
     fetch("http://localhost:3001/usuarios")
@@ -102,12 +99,6 @@ export default function Dashboard({ expanded }) {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Dashboard</h1>
 
-          {/* <button
-            onClick={() => setConfirmarSaida(true)}
-            className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-          >
-            <LogOut size={20} /> Sair
-          </button> */}
         </div>
 
         {/* CARDS */}
