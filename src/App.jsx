@@ -9,6 +9,7 @@ import Configuracoes from "./pages/Configuracoes";
 import HistoricoLaudos from "./pages/HistoricoLaudos";
 
 import "./index.css";
+import LogsAuditoria from "./pages/LogsAuditoria";
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       <Route path="/CadastroPacientes" element={<CadastroPacientes />} />
       <Route path="/VisualizarImagens" element={<VisualizarImagens />} />
       <Route path="/GerarLaudo" element={<GerarLaudo />} />
-      <Route path="/HistoricoLaudos" element={<HistoricoLaudos />} />
+      <Route path="/LogsAuditoria" element={<LogsAuditoria />} />
       <Route path="/Configuracoes" element={<Configuracoes />} />
 
       {/* <Route path="/ConsultarUsuario" element={<ConsultarUsuario/>}></Route> */}

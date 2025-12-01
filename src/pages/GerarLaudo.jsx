@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import ModalConcluido from "../components/modals/ModalConcluido";
-import ModalFalha from "../components/modals/ModalFalha";
-import ModalProcessando from "../components/modals/ModalProcessando";
+import ModalConcluido from "../modals/ModalConcluido";
+import ModalFalha from "../modals/ModalFalha";
+import ModalProcessando from "../modals/ModalProcessando";
 
 export default function GerarLaudo() {
   const [modalAberto, setModalAberto] = useState(null);

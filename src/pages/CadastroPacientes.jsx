@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import NovoExame from "../modals/NovoExame";
 
-export default function CadastroPacientes() {
+function CadastroPacientes() {
   const [pacientes, setPacientes] = useState([]);
   const [editId, setEditId] = useState(null);
   const [pesquisa, setPesquisa] = useState("");
@@ -16,6 +17,16 @@ export default function CadastroPacientes() {
   });
 
   const [novoExame, setNovoExame] = useState({
+    tipo: "",
+    data: "",
+    resultado: "",
+  });
+
+  // Estados do modal
+  const [modalExameAberto, setModalExameAberto] = useState(false);
+  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
+
+  const [exameNovoModal, setExameNovoModal] = useState({
     tipo: "",
     data: "",
     resultado: "",
@@ -39,7 +50,7 @@ export default function CadastroPacientes() {
     setNovoExame({ ...novoExame, [e.target.name]: e.target.value });
   };
 
-  // Adiciona exame ao array do paciente
+  // Adiciona exame ao array do paciente (na seção do formulário de cadastro)
   const adicionarExame = () => {
     if (!novoExame.tipo || !novoExame.data || !novoExame.resultado) return;
     setFormPacientes({
@@ -121,7 +132,52 @@ export default function CadastroPacientes() {
     setNovoExame({ tipo: "", data: "", resultado: "" });
   }
 
-  // Filtrar pacientes pela pesquisa (nome ou CPF)
+  // Abrir modal para adicionar novo exame
+  function abrirModalExame(paciente) {
+    setPacienteSelecionado(paciente);
+    setExameNovoModal({ tipo: "", data: "", resultado: "" });
+    setModalExameAberto(true);
+  }
+
+  // Salvar exame pelo modal
+  async function salvarExameModal() {
+    if (!exameNovoModal.tipo || !exameNovoModal.data || !exameNovoModal.resultado) {
+      alert("Preencha todos os campos do exame.");
+      return;
+    }
+
+    const examesAtualizados = [
+      ...(pacienteSelecionado.exames || []),
+      exameNovoModal,
+    ];
+
+    try {
+      const res = await fetch(
+        `http://localhost:3001/pacientes/${pacienteSelecionado.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...pacienteSelecionado,
+            exames: examesAtualizados,
+          }),
+        }
+      );
+
+      const atualizado = await res.json();
+
+      setPacientes((prev) =>
+        prev.map((p) => (p.id === atualizado.id ? atualizado : p))
+      );
+
+      setModalExameAberto(false);
+      setPacienteSelecionado(null);
+    } catch (error) {
+      console.error("Erro ao salvar exame:", error);
+    }
+  }
+
+  // Filtrar pacientes pela pesquisa
   const pacientesFiltrados = pacientes.filter(
     (p) =>
       p.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
@@ -131,7 +187,8 @@ export default function CadastroPacientes() {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Navbar />
-      <main className="flex-1 p-8">
+
+      <main className={`flex-1 p-8 ${modalExameAberto ? "blur-sm" : ""}`}>
         <h1 className="text-2xl font-bold mb-6">Cadastro de Pacientes</h1>
 
         {/* Campo de pesquisa */}
@@ -160,6 +217,7 @@ export default function CadastroPacientes() {
               className="w-full p-2 mt-1 border rounded-lg"
             />
           </div>
+
           <div>
             <label className="font-medium text-gray-700">Data de Nascimento</label>
             <input
@@ -170,6 +228,7 @@ export default function CadastroPacientes() {
               className="w-full p-2 mt-1 border rounded-lg"
             />
           </div>
+
           <div>
             <label className="font-medium text-gray-700">Telefone</label>
             <input
@@ -181,6 +240,7 @@ export default function CadastroPacientes() {
               placeholder="(xx) xxxxx-xxxx"
             />
           </div>
+
           <div>
             <label className="font-medium text-gray-700">CPF</label>
             <input
@@ -192,6 +252,7 @@ export default function CadastroPacientes() {
               placeholder="xxx.xxx.xxx-xx"
             />
           </div>
+
           <div>
             <label className="font-medium text-gray-700">Idade</label>
             <input
@@ -207,6 +268,7 @@ export default function CadastroPacientes() {
           {/* Campos do exame */}
           <div className="md:col-span-3 border-t pt-4 mt-4">
             <h2 className="font-bold text-lg mb-2">Adicionar Exame</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
               <input
                 type="text"
@@ -216,13 +278,15 @@ export default function CadastroPacientes() {
                 onChange={handleExameChange}
                 className="w-full p-2 border rounded-lg"
               />
+
               <input
                 type="date"
                 name="data"
-                value={novoExame.data}
+                value={NovoExame.data}
                 onChange={handleExameChange}
                 className="w-full p-2 border rounded-lg"
               />
+
               <input
                 type="text"
                 name="resultado"
@@ -232,6 +296,7 @@ export default function CadastroPacientes() {
                 className="w-full p-2 border rounded-lg"
               />
             </div>
+
             <button
               type="button"
               onClick={adicionarExame}
@@ -259,8 +324,12 @@ export default function CadastroPacientes() {
           </button>
         </form>
 
+
         {/* LISTA DE PACIENTES */}
-        <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800">Pacientes cadastrados</h2>
+        <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800">
+          Pacientes cadastrados
+        </h2>
+
         <div className="space-y-2">
           {pacientesFiltrados.map((p) => (
             <div
@@ -272,21 +341,35 @@ export default function CadastroPacientes() {
               <p><span className="font-bold">Telefone:</span> {p.telefone}</p>
               <p><span className="font-bold">CPF:</span> {p.cpf}</p>
               <p><span className="font-bold">Idade:</span> {p.idade}</p>
+
               <div className="flex flex-col gap-1">
-                <div className="flex gap-3">
+
+                {/* BOTÕES */}
+                <div className="flex gap-3 items-center">
                   <button
                     onClick={() => iniciarEdicao(p)}
                     className="text-blue-600 font-semibold hover:underline"
                   >
                     Editar
                   </button>
+
                   <button
                     onClick={() => excluirPaciente(p.id)}
                     className="text-red-600 font-semibold hover:underline"
                   >
                     Excluir
                   </button>
+
+                  <button
+                    onClick={() => abrirModalExame(p)}
+                    className="text-green-700 text-xl font-bold hover:scale-125 transition"
+                    title="Adicionar exame"
+                  >
+                    +
+                  </button>
                 </div>
+
+                {/* EXAMES */}
                 <div className="mt-2">
                   <p className="font-bold">Exames:</p>
                   {p.exames && p.exames.length > 0 ? (
@@ -301,11 +384,75 @@ export default function CadastroPacientes() {
                     <p className="text-gray-500 text-sm">Nenhum exame cadastrado</p>
                   )}
                 </div>
+
               </div>
             </div>
           ))}
         </div>
       </main>
+
+
+      {/* MODAL */}
+      {modalExameAberto && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Novo Exame para {pacienteSelecionado?.nome}
+            </h2>
+
+            <input
+              type="text"
+              placeholder="Tipo do exame"
+              value={exameNovoModal.tipo}
+              onChange={(e) =>
+                setExameNovoModal({ ...exameNovoModal, tipo: e.target.value })
+              }
+              className="w-full p-2 border rounded mb-3"
+            />
+
+            <input
+              type="date"
+              value={exameNovoModal.data}
+              onChange={(e) =>
+                setExameNovoModal({ ...exameNovoModal, data: e.target.value })
+              }
+              className="w-full p-2 border rounded mb-3"
+            />
+
+            <input
+              type="text"
+              placeholder="Resultado"
+              value={exameNovoModal.resultado}
+              onChange={(e) =>
+                setExameNovoModal({
+                  ...exameNovoModal,
+                  resultado: e.target.value,
+                })
+              }
+              className="w-full p-2 border rounded mb-4"
+            />
+
+            <div className="flex justify-between">
+              <button
+                onClick={() => setModalExameAberto(false)}
+                className="px-4 py-2 bg-gray-400 text-white rounded-lg"
+              >
+                Cancelar
+              </button>
+
+              <button
+                onClick={salvarExameModal}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
+
+export default CadastroPacientes

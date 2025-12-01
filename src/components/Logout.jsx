@@ -23,8 +23,7 @@
 // }
 
 import { useState } from "react";
-import ModalConfirmarSaida from "./modals/ModalConfirmarSaida";
-
+import ModalConfirmarSaida from "../modals/ModalConfirmarSaida";
 
 export default function Logout() {
   const [abrirModal, setAbrirModal] = useState(false);
@@ -33,7 +32,7 @@ export default function Logout() {
     <>
       <button
         onClick={() => setAbrirModal(true)}
-        className="flex justify-center items-center gap-2 bg-red-600 text-white rounded-md hover:bg-red-700 cursor-pointer "
+        className="flex justify-center items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 cursor-pointer"
       >
         Sair
       </button>
@@ -45,3 +44,4 @@ export default function Logout() {
     </>
   );
 }
+

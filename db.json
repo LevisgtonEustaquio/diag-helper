@@ -22,7 +22,8 @@
     {
       "tipo": "Hemograma",
       "data": "2025-11-27",
-      "resultado": "Normal"
+      "resultado": "Normal",
+      "id": "c344"
     }
   ]
 }
