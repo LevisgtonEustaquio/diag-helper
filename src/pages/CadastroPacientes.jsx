@@ -394,7 +394,7 @@ function CadastroPacientes() {
 
       {/* MODAL */}
       {modalExameAberto && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-blur-sm z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-96">
             <h2 className="text-xl font-bold mb-4 text-center">
               Novo Exame para {pacienteSelecionado?.nome}
