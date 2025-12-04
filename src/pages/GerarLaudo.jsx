@@ -3,71 +3,151 @@ import Navbar from "../components/Navbar";
 import ModalConcluido from "../modals/ModalConcluido";
 import ModalFalha from "../modals/ModalFalha";
 import ModalProcessando from "../modals/ModalProcessando";
+import logo from "../assets/icon-diaghelper.svg";
 
 export default function GerarLaudo() {
   const [modalAberto, setModalAberto] = useState(null);
-  const [imagem, setImagem] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [imagens, setImagens] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [observacoes, setObservacoes] = useState("");
   const [resultadoAutomatico, setResultadoAutomatico] = useState("");
 
-  // Upload manual
   function handleImagem(e) {
-    const file = e.target.files[0];
-    if (file) {
-      setImagem(file);
-      setPreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setImagens(files);
+      setPreviews(files.map(file => URL.createObjectURL(file)));
       setResultadoAutomatico("Aguardando análise");
     }
   }
 
-  // Gerar Laudo
+  function removerImagem(idx) {
+    setImagens(prev => prev.filter((_, i) => i !== idx));
+    setPreviews(prev => prev.filter((_, i) => i !== idx));
+  }
+
   function handleGerarLaudo() {
-    if (!imagem) {
+    if (imagens.length === 0) {
       setModalAberto("falha");
       return;
     }
-
     setModalAberto("processando");
-
     setTimeout(() => {
       setResultadoAutomatico("Análise concluída (Manualmente enviado)");
       setModalAberto("concluido");
     }, 2000);
   }
 
-  // Visualizar Laudo
   function visualizarLaudo() {
-    if (!preview) return alert("Envie uma imagem primeiro!");
+    if (previews.length === 0) return alert("Envie uma imagem primeiro!");
 
     const win = window.open("", "_blank");
 
     win.document.write(`
       <html>
-        <head><title>Laudo Médico</title></head>
-        <body style="font-family: Arial; padding: 20px;">
-          <h1>Laudo Médico</h1>
-          <hr />
+      <head>
+      <title>Laudo Médico</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      </head>
 
-          <h3>Resultado da análise:</h3>
-          <p><strong>${resultadoAutomatico}</strong></p>
+      <body class="font-sans p-5">
+     
+        <div class="flex items-center gap-4 mb-5">
+          <img src="${logo}" class="w-20 h-auto" />
+          <h1 class="m-0 text-2xl font-semibold">Diag Helper</h1>
+        </div>
 
-          <h3>Imagem analisada:</h3>
-          <img src="${preview}" style="max-width: 100%; border-radius: 8px; margin-bottom: 20px;" />
+        <hr class="border-gray-500 mb-5" />
 
-          <h3>Observações do médico:</h3>
-          <p>${observacoes || "Nenhuma observação adicionada."}</p>
-        </body>
+        <h2 class="mb-5 text-xl font-semibold">Laudo Médico<h2>
+
+        <button 
+          onclick="gerarPDF()" 
+          class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm cursor-pointer mb-6"> 
+          Baixar PDF 
+        </button>
+
+        <h3>Resultado da análise:</h3>
+        <p><strong>${resultadoAutomatico}</strong></p>
+
+        <h3 class="mt-6">Imagens analisadas:</h3>
+
+        ${previews
+        .map(
+          src => `
+            <img src="${src}" 
+              class="w-full max-w-3xl h-auto block mx-auto my-6 rounded-lg shadow-md" 
+            />`
+        )
+        .join("")}
+
+        <h3 class="mt-6">Observações:</h3>
+        <p>${observacoes || "Nenhuma observação adicionada."}</p>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+        <script>
+          async function gerarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 20;
+
+            doc.setFontSize(18);
+            doc.text("Laudo Médico", 105, y, { align: "center" });
+            y += 15;
+
+            doc.setFontSize(12);
+            doc.text("Resultado da análise:", 10, y);
+            y += 7;
+
+            doc.setFont(undefined, "bold");
+            doc.text("${resultadoAutomatico || "—"}", 10, y);
+            doc.setFont(undefined, "normal");
+            y += 15;
+
+            ${previews
+        .map(
+          (src, i) => `
+                let img${i} = new Image();
+                img${i}.src = "${src}";
+                await img${i}.decode();
+                let w${i} = 160;
+                let h${i} = (img${i}.height / img${i}.width) * w${i};
+
+                if (y + h${i} > 280) {
+                  doc.addPage();
+                  y = 20;
+                }
+
+                doc.addImage(img${i}, "JPEG", 25, y, w${i}, h${i});
+                y += h${i} + 10;
+              `
+        )
+        .join("")}
+
+            if (y > 240) {
+              doc.addPage();
+              y = 20;
+            }
+
+            doc.setFontSize(14);
+            doc.text("Observações:", 10, y);
+            y += 10;
+
+            doc.setFontSize(12);
+            const text = "${observacoes || "Nenhuma observação adicionada."}";
+            const lines = doc.splitTextToSize(text, 180);
+            doc.text(lines, 10, y);
+
+            doc.save("laudo.pdf");
+          }
+        </script>
+
+      </body>
       </html>
     `);
 
     win.document.close();
-  }
-
-  // Imprimir Laudo
-  function imprimirLaudo() {
-    visualizarLaudo();
-    setTimeout(() => window.print(), 600);
   }
 
   return (
@@ -79,25 +159,45 @@ export default function GerarLaudo() {
 
         <div className="bg-white p-8 rounded-xl shadow-xl max-w-4xl mx-auto border">
 
-          {/* Upload */}
           <label className="block mb-6">
-            <span className="text-gray-700 font-semibold">Enviar exame (imagem)</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImagem}
-              className="mt-2 block w-full border rounded-lg p-2 bg-gray-50 cursor-pointer"
-            />
+            <span className="text-gray-700 font-semibold">Enviar exame (imagens)</span>
+
+            <div className="mt-2">
+              <label
+                htmlFor="fileUpload"
+                className="block w-full border rounded-lg p-3 bg-gray-50 cursor-pointer text-center font-medium hover:bg-gray-100"
+              >
+                Selecionar imagens
+              </label>
+
+              <input
+                id="fileUpload"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImagem}
+                className="hidden"
+              />
+            </div>
           </label>
 
-          {/* Pré-visualização */}
-          {preview && (
+          {previews.length > 0 && (
             <div className="mb-6">
               <p className="text-gray-700 font-semibold">Pré-visualização:</p>
-              <img
-                src={preview}
-                className="w-full max-h-96 object-contain rounded-lg shadow-md mt-2"
-              />
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+                {previews.map((src, idx) => (
+                  <div key={idx} className="relative group border rounded-lg overflow-hidden shadow-md">
+                    <img src={src} className="w-full h-44 object-contain bg-white" />
+                    <button
+                      onClick={() => removerImagem(idx)}
+                      className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+              </div>
 
               <p className="mt-3 font-semibold text-gray-700">
                 Resultado automático:{" "}
@@ -106,7 +206,6 @@ export default function GerarLaudo() {
             </div>
           )}
 
-          {/* Observações */}
           <label className="block mb-6">
             <span className="text-gray-700 font-semibold">Observações do laudo</span>
             <textarea
@@ -117,7 +216,6 @@ export default function GerarLaudo() {
             />
           </label>
 
-          {/* Botões */}
           <div className="flex gap-4">
             <button
               onClick={handleGerarLaudo}
@@ -133,16 +231,9 @@ export default function GerarLaudo() {
               Visualizar
             </button>
 
-            <button
-              onClick={imprimirLaudo}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg"
-            >
-              Imprimir
-            </button>
           </div>
         </div>
 
-        {/* Modais */}
         <ModalConcluido open={modalAberto === "concluido"} onClose={() => setModalAberto(null)} />
         <ModalFalha open={modalAberto === "falha"} onClose={() => setModalAberto(null)} />
         <ModalProcessando open={modalAberto === "processando"} onClose={() => setModalAberto(null)} />
@@ -150,3 +241,5 @@ export default function GerarLaudo() {
     </div>
   );
 }
+
+
