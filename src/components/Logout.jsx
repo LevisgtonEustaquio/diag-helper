@@ -1,28 +1,6 @@
-// import { LogOut } from "lucide-react";
-// import ModalConfirmarSaida from "./modals/ModalConfirmarSaida";
-
-// export default function Logout(){
-
-//     const [logout, setLogout] = useState(false);
-
-
-//     return(
-
-//         <div>
-
-//         <button
-//             onClick={() => setLogout(true)}
-//             className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-//           >
-//             <LogOut size={20} /> Sair
-//           </button>
-
-//           <ModalConfirmarSaida />
-//         </div>
-//     );
-// }
-
 import { useState } from "react";
+import { FiLogOut } from "react-icons/fi";
+
 import ModalConfirmarSaida from "../modals/ModalConfirmarSaida";
 
 export default function Logout() {
@@ -32,9 +10,10 @@ export default function Logout() {
     <>
       <button
         onClick={() => setAbrirModal(true)}
-        className="flex justify-center items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 cursor-pointer"
+        className=" px-4 py-2 cursor-pointer"
       >
-        Sair
+       <FiLogOut  size={28} className="text-red-500 transition-transform duration-200 hover:scale-115 hover:text-red-600 " />
+       <p className="text-red-500 ">Sair</p>
       </button>
 
       <ModalConfirmarSaida
@@ -44,4 +23,3 @@ export default function Logout() {
     </>
   );
 }
-
