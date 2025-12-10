@@ -10,6 +10,7 @@ import HistoricoLaudos from "./pages/HistoricoLaudos";
 
 import "./index.css";
 import LogsAuditoria from "./pages/LogsAuditoria";
+import Suporte from "./pages/Suporte";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Route path="/Configuracoes" element={<Configuracoes />} />
 
       {/* <Route path="/ConsultarUsuario" element={<ConsultarUsuario/>}></Route> */}
+      <Route path="/suporte" element={<Suporte />} />
     </Routes>
   );
 }

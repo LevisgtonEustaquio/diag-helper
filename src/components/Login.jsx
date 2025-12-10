@@ -109,6 +109,12 @@ export default function Login() {
             >
               Entrar
             </button>
+            <button
+              type="button"
+              onClick={() => navigate("/suporte")}
+              className="text-blue-600 hover:underline mt-3 text-center">
+              Esqueci minha senha / Falar com o suporte
+            </button>
 
           </form>
         </div>
