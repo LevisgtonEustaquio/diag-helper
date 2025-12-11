@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import Layout from "../components/Navbar";
 import { carregarUsuarios, salvarUsuarios } from "../data/dadosUsuarios"; 
+import AnimatedH1 from "../components/AnimatedH1";
 
 export default function Configuracoes() {
   const navigate = useNavigate(); 
@@ -202,9 +203,10 @@ export default function Configuracoes() {
   return (
     <Layout>
       <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">
-          Configurações do Sistema
-        </h1>
+        <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Configurações</AnimatedH1>
+
+        </div>
         
         {/*SEÇÃO NOVO CADASTRO (Apenas administrador) */}
         {ehAdministrador && (

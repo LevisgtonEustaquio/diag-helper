@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { LogOut } from "lucide-react";
+import AnimatedH1 from "../components/AnimatedH1";
+
 
 export default function Dashboard({ expanded }) {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function Dashboard({ expanded }) {
     status: "Ativo",
   });
 
-  // 🔵 Buscar usuários quando abrir a página
+  //Buscar usuários quando abrir a página
   useEffect(() => {
     fetch("http://localhost:3001/usuarios")
       .then((res) => res.json())
@@ -33,7 +35,7 @@ export default function Dashboard({ expanded }) {
     return `${data} ${hora}`;
   };
 
-  // 🔵 CADASTRAR (POST no json-server)
+  //CADASTRAR (POST no json-server)
   const cadastrar = async (e) => {
     e.preventDefault();
 
@@ -64,7 +66,7 @@ export default function Dashboard({ expanded }) {
     }
   };
 
-  // 🔵 REMOVER (DELETE)
+  //REMOVER (DELETE)
   const remover = async (id) => {
     try {
       await fetch(`http://localhost:3001/usuarios/${id}`, {
@@ -96,8 +98,8 @@ export default function Dashboard({ expanded }) {
         `}
       >
         {/* Cabeçalho */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Dashboard</AnimatedH1>
 
         </div>
 

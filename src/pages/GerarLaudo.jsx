@@ -4,6 +4,8 @@ import ModalConcluido from "../modals/ModalConcluido";
 import ModalFalha from "../modals/ModalFalha";
 import ModalProcessando from "../modals/ModalProcessando";
 import logo from "../assets/icon-diaghelper.svg";
+import AnimatedH1 from "../components/AnimatedH1";
+
 
 export default function GerarLaudo() {
   const [modalAberto, setModalAberto] = useState(null);
@@ -155,7 +157,10 @@ export default function GerarLaudo() {
       <Navbar />
 
       <main className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">Gerar Laudo</h1>
+        <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Gerar Laudo</AnimatedH1>
+
+        </div>
 
         <div className="bg-white p-8 rounded-xl shadow-xl max-w-4xl mx-auto border">
 

@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import AnimatedH1 from "../components/AnimatedH1";
 
 function HistoricoLaudos(){
 
@@ -7,7 +8,10 @@ function HistoricoLaudos(){
             <Navbar />
 
             <main className="flex-1 p-8">
-            <h1 className="text-2xl font-bold mb-6">Histórico de laudos</h1>
+            <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Historico de laudos</AnimatedH1>
+
+        </div>
 
         </main>
         </div>

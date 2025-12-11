@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Navbar";
+import AnimatedH1 from "../components/AnimatedH1";  
 
 export default function LogsAuditoria() {
   const [logs, setLogs] = useState([]);
@@ -29,13 +30,14 @@ export default function LogsAuditoria() {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">
-          Logs de Auditoria
-        </h1>
+      <div className="max-w-6xl mx-auto px-6 py-10 mb-4">
+        <div className="flex justify-center items-center">
+          <AnimatedH1>Logs de auditoria</AnimatedH1>
+
+        </div>
 
         {/* filtros */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4 mb-6 ">
           <input
             type="text"
             placeholder="Pesquisar usuário ou ação..."
@@ -59,7 +61,7 @@ export default function LogsAuditoria() {
         </div>
 
         {/* tabela */}
-        <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+        <div className=" shadow-lg rounded-xl overflow-hidden border border-gray-200">
           <table className="w-full text-left">
             <thead className="bg-gray-100 text-gray-700">
               <tr>

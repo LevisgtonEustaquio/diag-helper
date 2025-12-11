@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import AnimatedH1 from "../components/AnimatedH1";
 
 function VisualizarImagens(){
 
@@ -8,8 +9,10 @@ function VisualizarImagens(){
 
             
         <main className="flex-1 p-8">
-            <h1 className="text-2xl font-bold mb-6">Visualizar imagens</h1>
+            <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Visuaoizar imagens</AnimatedH1>
 
+        </div>
         </main>
         </div>
     )

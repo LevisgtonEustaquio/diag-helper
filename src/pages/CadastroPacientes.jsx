@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import NovoExame from "../modals/NovoExame";
 import ModalConfirmarExclusao from "../modals/ModalConfirmarExclusao";
+import AnimatedH1 from "../components/AnimatedH1";
 
 function CadastroPacientes() {
   const [pacientes, setPacientes] = useState([]);
@@ -200,7 +201,10 @@ function CadastroPacientes() {
       <Navbar />
 
       <main className={`flex-1 p-8 ${modalExameAberto ? "blur-sm" : ""}`}>
-        <h1 className="text-2xl font-bold mb-6">Cadastro de Pacientes</h1>
+        <div className="flex justify-center items-center mb-6">
+          <AnimatedH1>Cadastro pacientes</AnimatedH1>
+
+        </div>
 
         {/* Campo de pesquisa */}
         <div className="mb-4">

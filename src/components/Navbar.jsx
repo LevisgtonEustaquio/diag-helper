@@ -11,6 +11,8 @@ import {
 
 import { Link } from "react-router-dom";
 import Logout from "./Logout";
+import PageWrapper from "../components/PageWrapper"
+import MainLayout from "../components/MainLayout"
 
 function Navbar({ expanded, setExpanded }) {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -97,9 +99,7 @@ function Navbar({ expanded, setExpanded }) {
               <Logout />
               
             </div>
-            {/* <div>
-              <h5>Sair</h5>
-            </div> */}
+          
           </div>
 
           <div
@@ -126,7 +126,7 @@ export default function Layout({ children }) {
 
       <main
         className={`
-          flex-1 p-6 transition-all duration-300
+          flex-1 p-6 transition-all duration-300 bg-primary-400 min-h-screen items-center justify-center
           ${expanded ? "ml-64" : "ml-20"}
         `}
       >
