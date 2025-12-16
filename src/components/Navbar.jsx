@@ -5,7 +5,8 @@ import {
   FcBusinessman,
   FcClock,
   FcSettings,
-  FcMenu 
+  FcMenu,
+  FcPortraitMode,
 } from "react-icons/fc";
 
 import { Link } from "react-router-dom";
@@ -25,17 +26,28 @@ function Navbar({ expanded, setExpanded }) {
         ${expanded ? "w-64" : "w-22"}
       `}
     >
+      {/* Logo com possivel alteração */}
+      <div className="flex items-center justify-center mb-2 relative py-14">
+        {/* Logo Grande*/}
 
-        {/* Logo com possivel alteração */}
-     <div className="flex items-center justify-center mb-2 relative py-14">
-      {/* Logo Grande*/}
+        <img
+          src="src/assets/6.svg"
+          alt="Logo Expandida"
+          className={`absolute py-4 transition-all duration-300 ${
+            expanded ? "opacity-100 w-48" : "opacity-0 w-12"
+          }`}
+        />
 
-      <img src="src/assets/6.svg" alt="Logo Expandida" className={`absolute py-4 transition-all duration-300 ${expanded ? "opacity-100 w-48" : "opacity-0 w-12"}`} />
+        {/* Logo Pequena */}
+        <img
+          src="src/assets/icon-diaghelper.svg"
+          alt="Logo Minimizada"
+          className={`absolute py-4 transition-all duration-300 ${
+            expanded ? "opacity-0 w-48" : "opacity-100 w-12"
+          }`}
+        />
+      </div>
 
-      {/* Logo Pequena */}
-      <img src="src/assets/icon-diaghelper.svg" alt="Logo Minimizada" className={`absolute py-4 transition-all duration-300 ${expanded ? "opacity-0 w-48" : "opacity-100 w-12"}`} />
-     </div>
-     
       <div className="flex flex-col h-full px-6 p-6 bg-background-100">
         {/* Botão expandir */}
         <button
@@ -45,7 +57,7 @@ function Navbar({ expanded, setExpanded }) {
           }}
           className="mb-6 ml-2 cursor-pointer w-6 transition-transform duration-200 hover:scale-125 "
         >
-          <FcMenu  size={24} />
+          <FcMenu size={24} />
         </button>
 
         {/* MENU */}
@@ -56,15 +68,24 @@ function Navbar({ expanded, setExpanded }) {
               { to: "/GerarLaudo", icon: FcPlus, label: "Gerar laudo" },
               {
                 to: "/CadastroPacientes",
-                icon: FcBusinessman,
+                icon: FcPortraitMode,
                 label: "Cadastrar paciente",
+              },
+              {
+                to: "/CadastroUsuario",
+                icon: FcBusinessman,
+                label: "Cadastrar usuario",
               },
               {
                 to: "/LogsAuditoria",
                 icon: FcClock,
                 label: "Logs de Auditoria",
               },
-              { to: "/configuracoes", icon: FcSettings, label: "Configurações" },
+              {
+                to: "/configuracoes",
+                icon: FcSettings,
+                label: "Configurações",
+              },
             ].map((item, i) => (
               <li key={i}>
                 <Link
@@ -78,7 +99,11 @@ function Navbar({ expanded, setExpanded }) {
                   <span
                     className={`
                       transition-all duration-300 text-nowrap
-                      ${expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
+                      ${
+                        expanded
+                          ? "opacity-100"
+                          : "opacity-0 w-0 overflow-hidden"
+                      }
                     `}
                   >
                     {item.label}
@@ -106,7 +131,6 @@ function Navbar({ expanded, setExpanded }) {
             </div>
             <div className="mt-1">
               <Logout />
-              
             </div>
             {/* <div>
               <h5>Sair</h5>
@@ -116,11 +140,17 @@ function Navbar({ expanded, setExpanded }) {
           <div
             className={`
               flex flex-col transition-all duration-300 mt-1 gap-3
-              ${expanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0  overflow-hidden"}
+              ${
+                expanded
+                  ? "opacity-100 max-w-[200px]"
+                  : "opacity-0 max-w-0  overflow-hidden"
+              }
             `}
           >
             <p className="font-semibold whitespace-nowrap">{usuario?.nome}</p>
-            <p className="text-sm text-slate-600 whitespace-nowrap">{usuario?.email}</p>
+            <p className="text-sm text-slate-600 whitespace-nowrap">
+              {usuario?.email}
+            </p>
           </div>
         </div>
       </div>
