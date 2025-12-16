@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalConcluido from "../modals/ModalConcluido";
 import ModalFalha from "../modals/ModalFalha";
 import ModalProcessando from "../modals/ModalProcessando";
-import logo from "../assets/icon-diaghelper.svg";
+import logo from "../assets/logopreta.svg";
 import PageWrapper from "../components/PageWrapper";
 
 export default function GerarLaudo() {
@@ -53,8 +53,7 @@ export default function GerarLaudo() {
       <body class="font-sans p-5">
      
         <div class="flex items-center gap-4 mb-5">
-          <img src="${logo}" class="w-20 h-auto" />
-          <h1 class="m-0 text-2xl font-semibold">Diag Helper</h1>
+          <img src="${logo}" class="w-40 h-auto" />
         </div>
 
         <hr class="border-gray-500 mb-5" />
