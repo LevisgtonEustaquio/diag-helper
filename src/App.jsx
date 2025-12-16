@@ -24,6 +24,15 @@ function App() {
       {/* Página sem layout */}
       <Route path="/" element={<Login />} />
 
+      <Route
+        path="/Suporte"
+        element={
+
+            <Suporte />
+         
+        }
+      />
+
       {/* Páginas com layout */}
       <Route
         path="/dashboard"
