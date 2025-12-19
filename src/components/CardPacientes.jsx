@@ -2,35 +2,35 @@ import React from "react";
 
 const CardPaciente = ({ paciente, onEdit, onDelete, onAddExame }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 bg-white p-4 rounded-lg border items-start">
+    <div className="w-full max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 bg-white px-4 sm:px-px-6 lg:px-8 py-6 rounded-lg border items-start">
       <p><span className="font-bold">Nome:</span> {paciente.nome}</p>
       <p><span className="font-bold">Nascimento:</span> {paciente.dataNascimento}</p>
       <p><span className="font-bold">Telefone:</span> {paciente.telefone}</p>
       <p><span className="font-bold">CPF:</span> {paciente.cpf}</p>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-4 md:col-span-2">
         {/* BOTÕES DE AÇÃO */}
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-6 items-center">
           <button 
             onClick={() => onEdit(paciente)} 
-            className="text-blue-600 font-semibold hover:underline"
+            className="text-blue-600 text-base font-semibold hover:scale-125 transition"
           >
             Editar
           </button>
 
           <button 
             onClick={() => onDelete(paciente.id)} 
-            className="text-red-600 font-semibold hover:underline"
+            className="text-red-600 text-base font-semibold hover:scale-125 transition"
           >
             Excluir
           </button>
 
           <button 
             onClick={() => onAddExame(paciente)} 
-            className="text-green-700 text-xl font-bold hover:scale-125 transition"
+            className="text-green-700 text-base font-semibold hover:scale-125 transition"
             title="Adicionar exame"
           >
-            +
+            Adiciona Exame
           </button>
         </div>
 
