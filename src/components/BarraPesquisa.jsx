@@ -8,7 +8,7 @@ const BarraPesquisa = ({ pesquisa, setPesquisa }) => {
         placeholder="🔍 Pesquisar paciente por nome ou CPF"
         value={pesquisa}
         onChange={(e) => setPesquisa(e.target.value)}
-        className="w-full md:w-1/3 p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
+        className="w-full md:w-4/3 p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
       />
     </div>
   );

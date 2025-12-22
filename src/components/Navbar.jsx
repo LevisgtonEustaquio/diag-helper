@@ -67,14 +67,14 @@ function Navbar({ expanded, setExpanded }) {
               { to: "/dashboard", icon: FcHome, label: "Dashboard" },
               { to: "/GerarLaudo", icon: FcPlus, label: "Gerar laudo" },
               {
-                to: "/CadastroPacientes",
-                icon: FcPortraitMode,
-                label: "Cadastrar paciente",
-              },
-              {
                 to: "/CadastroUsuario",
                 icon: FcBusinessman,
-                label: "Cadastrar usuario",
+                label: "Usuário",
+              },
+              {
+                to: "/CadastroPacientes",
+                icon: FcPortraitMode,
+                label: "Paciente",
               },
               {
                 to: "/LogsAuditoria",
