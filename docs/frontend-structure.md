@@ -14,3 +14,17 @@ src/
 ├── App.jsx
 └── main.jsx
 ```
+
+## Descrição de cada parte
+
+### `assets/`
+- Arquivos estáticos (imagens e ícones)
+
+### `components/`
+- Componentes reutilizáveis da interface
+
+### `pages/`
+- Telas principais da aplicação
+
+### `styles/`
+- Arquivos de estilo global ou configurações Tailwind
