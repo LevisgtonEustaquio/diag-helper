@@ -785,6 +785,15 @@
       "detalhes": null,
       "data": "2026-01-08T15:32:45.906Z",
       "ip": "127.0.0.1"
+    },
+    {
+      "id": "52f0",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-08T16:30:01.535Z",
+      "ip": "127.0.0.1"
     }
   ],
   "pacientes": [
