@@ -27,10 +27,10 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      // 1. Normaliza o e-mail (conforme lógica do seu Cadastro)
+      // Normaliza o e-mail 
       const emailBusca = formData.email.trim().toLowerCase();
       
-      // 2. Busca o usuário por e-mail e senha no db.json através da API
+      // Busca o usuário por e-mail e senha no db.json através da API
       const res = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
       const usuario = res.data[0];
 
@@ -40,14 +40,8 @@ export default function Login() {
         return;
       }
 
-      // 3. Verificação de Perfil (Exatidão com o Cadastro)
-      if (usuario.perfil !== formData.perfil) {
-        setMensagem("Perfil de acesso incorreto para este usuário.");
-        setCarregando(false);
-        return;
-      }
 
-      // 4. Verificação de Status
+      // Verificação de Status
       if (usuario.status === "Inativo") {
         setMensagem("Este usuário está inativo. Contate o administrador.");
         setCarregando(false);
@@ -92,23 +86,7 @@ localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
           </div>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            {/* Tipo de Usuário (Perfil) */}
-            <div className="relative">
-              <MdPerson className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-              <select
-                name="perfil"
-                value={formData.perfil}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none appearance-none bg-white text-gray-700 transition-all"
-                required
-              >
-                <option value="">Quem está acessando?</option>
-                <option value="administrador">Administrador</option>
-                <option value="medico">Médico</option>
-                <option value="recepcao">Recepção</option>
-              </select>
-            </div>
-
+      
             {/* Email */}
             <div className="relative">
               <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />

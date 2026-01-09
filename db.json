@@ -596,6 +596,69 @@
       "detalhes": null,
       "data": "2026-01-09T02:04:22.374Z",
       "ip": "127.0.0.1"
+    },
+    {
+      "id": "d09a",
+      "usuario": "Fulano Silva",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T01:57:50.584Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "61d8",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:01:48.697Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "728d",
+      "usuario": "Joao Senna",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:02:04.202Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "9053",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:02:39.200Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "e788",
+      "usuario": "Joao Senna",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:07:33.828Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "a74d",
+      "usuario": "Fulano Silva",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:07:52.341Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "e38d",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-09T02:10:20.949Z",
+      "ip": "127.0.0.1"
     }
   ],
   "pacientes": [
