@@ -5,7 +5,6 @@ import Login from "./components/Login";
 import Dashboard from "./pages/Dashboard";
 import Cadastro from "./components/Cadastro";
 import CadastroPacientes from "./pages/CadastroPacientes";
-import CadastroExames from "./pages/CadastroExames";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import VisualizarImagens from "./pages/VisualizarImagens";
 import GerarLaudo from "./pages/GerarLaudo";
@@ -59,16 +58,7 @@ function App() {
     </PrivateRoute>
   }
 />
-<Route
-  path="/CadastroExames"
-  element={
-    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>
-      <MainLayout expanded={expanded} setExpanded={setExpanded}>
-        <CadastroExames />
-      </MainLayout>
-    </PrivateRoute>
-  }
-/>
+
       <Route
   path="/CadastroUsuario"
   element={
