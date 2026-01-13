@@ -42,7 +42,7 @@ import axios from 'axios';
 import { registrarLog } from './auditService';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://localhost:3000',
 });
 
 api.interceptors.response.use(
