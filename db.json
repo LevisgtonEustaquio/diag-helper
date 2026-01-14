@@ -659,6 +659,177 @@
       "detalhes": null,
       "data": "2026-01-09T02:10:20.949Z",
       "ip": "127.0.0.1"
+    },
+    {
+      "id": "c2fb",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:18:40.812Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d758",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:24:51.997Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "e4d7",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:29:51.193Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "065f",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:33:09.795Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "5903",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:33:57.778Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "a52f",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:36:05.326Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d6e0",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:36:50.039Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "ba7f",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:39:53.511Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d08d",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:40:42.477Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "80da",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:45:02.627Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "617a",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:46:03.777Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d996",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:48:12.077Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "486a",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:51:55.660Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "09bc",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:52:32.794Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "0aa7",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:56:29.221Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "229d",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:57:16.794Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "6d21",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T21:58:39.427Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "180d",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T22:02:40.577Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "9eae",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-13T22:21:30.455Z",
+      "ip": "127.0.0.1"
     }
   ],
   "pacientes": [

@@ -6,6 +6,7 @@ import {
   FcBusinessman,
   FcClock,
   FcSettings,
+  FcUnlock,
   FcPortraitMode,
 } from "react-icons/fc";
 import Logout from "./Logout";
@@ -15,6 +16,7 @@ const menuItems = [
   { to: "/GerarLaudo", icon: FcPlus, label: "Gerar laudo" },
   { to: "/CadastroUsuario", icon: FcBusinessman, label: "Usuário" },
   { to: "/CadastroPacientes", icon: FcPortraitMode, label: "Paciente" },
+  { to: "/AdminSolicitacoesSenha", icon: FcUnlock, label: "Solicitações de Senha" }, 
   { to: "/LogsAuditoria", icon: FcClock, label: "Logs de Auditoria" },
   { to: "/configuracoes", icon: FcSettings, label: "Configurações" },
 ];
