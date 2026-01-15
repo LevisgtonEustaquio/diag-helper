@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BarraPesquisa from "../components/BarraPesquisa";
 import ListaLaudos from "../components/ListaLaudos";
 import ListaPacientes from "../components/ListaPacientes";
@@ -8,16 +8,17 @@ import ModalConcluido from "../modals/ModalConcluido";
 import ModalFalha from "../modals/ModalFalha";
 import ModalProcessando from "../modals/ModalProcessando";
 
+// --- IMPORTAÇÃO DO SERVIÇO DE AUDITORIA ---
 import { MdCheckCircle, MdClose, MdCloudUpload, MdDescription, MdPersonSearch } from "react-icons/md";
-import { logsService } from "../services/dataServices";
-import { useMedicos, usePacientes, useDebounce, usePacientesFilterados } from "../hooks/useApi";
+import api from "../services/api";
+import { registrarLog } from "../services/auditService";
 
 export default function GerarLaudo() {
-  const { data: pacientes = [], loading: loadingPacientes } = usePacientes();
-  const { data: medicos = [], loading: loadingMedicos } = useMedicos();
-  
+  const [pacientes, setPacientes] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
+  const [pesquisaDebounced, setPesquisaDebounced] = useState("");
   const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
+  const [medicos, setMedicos] = useState([]);
   const [medicoSelecionado, setMedicoSelecionado] = useState(null);
   const [modalAberto, setModalAberto] = useState(null);
   const [imagens, setImagens] = useState([]);
@@ -25,9 +26,37 @@ export default function GerarLaudo() {
   const [observacoes, setObservacoes] = useState("");
   const [dataLaudo, setDataLaudo] = useState("");
   const [laudos, setLaudos] = useState([]);
-  
-  const pesquisaDebounced = useDebounce(pesquisa, 500);
-  const pacientesFiltrados = usePacientesFilterados(pacientes, pesquisaDebounced);
+
+  // Recupera o nome do usuário que está logado para o log
+  const usuarioLogado = localStorage.getItem("usuarioNome") || "Usuário Sistema";
+
+  useEffect(() => {
+    api
+      .get("/pacientes")
+      .then((data) => setPacientes(Array.isArray(data) ? data : []))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    api
+      .get("/usuarios")
+      .then((data) => {
+        const medicosAtivos = data.filter(
+          (u) => u.status === "Ativo" && (u.perfil === "medico" || u.cargo.includes("Médico"))
+        );
+        setMedicos(medicosAtivos);
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setPesquisaDebounced(pesquisa), 500);
+    return () => clearTimeout(timer);
+  }, [pesquisa]);
+
+  const pacientesFiltrados = pacientes.filter(
+    (p) => p.nome.toLowerCase().includes(pesquisaDebounced.toLowerCase()) || p.cpf.includes(pesquisaDebounced)
+  );
 
   function handleImagem(e) {
     const files = Array.from(e.target.files);
@@ -61,8 +90,8 @@ export default function GerarLaudo() {
       };
 
       // REGISTRO DE LOG
-      const usuarioLogado = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")).nome : "Usuário Sistema";
-      await logsService.create(
+      // Registra quem fez, o que fez e o detalhe (nome do paciente)
+      await registrarLog(
         usuarioLogado,
         `Gerou laudo médico para o paciente: ${pacienteSelecionado.nome}`,
         "LAUDO"

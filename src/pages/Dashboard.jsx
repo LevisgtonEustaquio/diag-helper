@@ -2,10 +2,24 @@ import { useEffect, useState } from "react";
 import { MdAnalytics, MdCheckCircle, MdPeople, MdPersonOff } from "react-icons/md";
 import DashboardChart from "../components/DashboardChart";
 import PageWrapper from "../components/PageWrapper";
-import { useUsuarios } from "../hooks/useApi";
+import api from "../services/api";
 
 export default function Dashboard() {
-  const { data: usuarios = [], loading, error } = useUsuarios();
+  const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api
+      .get("/usuarios")
+      .then((data) => {
+        setUsuarios(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar usuários:", err);
+        setLoading(false);
+      });
+  }, []);
 
   // Cálculos para os Cards de Indicadores
   const totalUsuarios = usuarios.length;
