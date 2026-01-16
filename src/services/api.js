@@ -38,39 +38,61 @@
 
 // export default api;
 
-import axios from 'axios';
-import { registrarLog } from './auditService';
-
-const api = axios.create({
-  baseURL: 'http://localhost:3001',
-});
-
-api.interceptors.response.use(
-  (response) => {
-    const { method, url, data: requestData } = response.config;
-
-    // Log automático apenas para POST e DELETE. 
-    // O PUT (edição) é feito manualmente no componente para detalhar o que mudou.
-    if (['post', 'delete'].includes(method.toLowerCase()) && !url.includes('LogsAuditoria')) {
-      const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-      
-      let detalhe = "";
-      if (method.toLowerCase() === 'delete') {
-        detalhe = `ID: ${url.split('/').pop()}`;
-      } else {
-        const dados = typeof requestData === 'string' ? JSON.parse(requestData) : requestData;
-        detalhe = dados.nome ? `Paciente: ${dados.nome}` : "";
-      }
-
-      registrarLog(usuarioLogado, `Realizou ${method.toUpperCase()} (${detalhe})`, 'INFO');
-    }
-    return response;
-  },
-  (error) => {
-    const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-    registrarLog(usuarioLogado, `ERRO: ${error.config?.method.toUpperCase()} em ${error.config?.url}`, 'ERRO');
-    return Promise.reject(error);
+class APIClient {
+  constructor() {
+    this.baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
+    this.defaultHeaders = {};
+    this.logger = null;
   }
-);
 
-export default api; 
+  setBaseURL(url) { this.baseURL = url; }
+
+  setHeader(key, value) {
+    if (value === undefined || value === null) delete this.defaultHeaders[key];
+    else this.defaultHeaders[key] = value;
+  }
+
+  setAuthToken(token) {
+    if (token) this.setHeader('Authorization', `Bearer ${token}`);
+    else this.setHeader('Authorization', undefined);
+  }
+
+  setLogger(fn) { this.logger = typeof fn === 'function' ? fn : null; }
+
+  async request(path, options = {}) {
+    const url = `${this.baseURL}${path.startsWith('/') ? path : `/${path}`}`;
+    const method = (options.method || 'GET').toUpperCase();
+    const headers = {
+      ...this.defaultHeaders,
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options.headers || {}),
+    };
+
+    if (this.logger) { try { this.logger({ phase: 'request', method, url, body: options.body }); } catch {} }
+
+    const response = await fetch(url, { ...options, method, headers });
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+
+    if (!response.ok) {
+      const errorBody = isJson ? await response.json().catch(() => null) : await response.text();
+      if (this.logger) { try { this.logger({ phase: 'error', method, url, status: response.status, body: errorBody }); } catch {} }
+      const error = new Error(`HTTP ${response.status} ${response.statusText}`);
+      error.status = response.status;
+      error.body = errorBody;
+      throw error;
+    }
+
+    const data = isJson ? await response.json() : await response.text();
+    if (this.logger) { try { this.logger({ phase: 'response', method, url, status: response.status, body: data }); } catch {} }
+    return data;
+  }
+
+  get(path) { return this.request(path, { method: 'GET' }); }
+  post(path, data) { return this.request(path, { method: 'POST', body: JSON.stringify(data) }); }
+  put(path, data) { return this.request(path, { method: 'PUT', body: JSON.stringify(data) }); }
+  delete(path) { return this.request(path, { method: 'DELETE' }); }
+}
+
+const api = new APIClient();
+export default api;

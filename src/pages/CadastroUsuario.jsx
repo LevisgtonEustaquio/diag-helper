@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
-import { MdSaveAlt, MdCancel, MdPersonAdd, MdDeleteOutline, MdEdit, MdEmail } from "react-icons/md";
-import PageWrapper from "../components/PageWrapper";
+import { useEffect, useState } from "react";
+import { MdCancel, MdDeleteOutline, MdEdit, MdEmail, MdPersonAdd, MdSaveAlt } from "react-icons/md";
 import BarraPesquisa from "../components/BarraPesquisa";
 import BotaoCadastrar from "../components/BotaoCadastrar";
-import InputCPF from "../components/InputCPF"; 
+import InputCPF from "../components/InputCPF";
+import PageWrapper from "../components/PageWrapper";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
 export default function CadastroUsuario() {
+  const { usuario: usuarioLogado } = useAuth();
   const [usuarios, setUsuarios] = useState([]);
   const [formAtivo, setFormAtivo] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -35,7 +37,7 @@ export default function CadastroUsuario() {
 
   useEffect(() => {
     api.get("/usuarios")
-      .then((res) => setUsuarios(Array.isArray(res.data) ? res.data : []))
+      .then((res) => setUsuarios(Array.isArray(res) ? res : []))
       .catch((err) => console.error("Erro ao carregar usuários:", err));
   }, []);
 
@@ -84,31 +86,31 @@ export default function CadastroUsuario() {
           }
         });
 
-        const res = await api.put(`/usuarios/${editId}`, { 
-          ...dadosParaSalvar, 
-          senha: senha || usuarioOriginal.senha 
+        const res = await api.put(`/usuarios/${editId}`, {
+          ...dadosParaSalvar,
+          senha: senha || usuarioOriginal.senha
         });
-        
+
         // Registro do Log com os Detalhes das mudanças
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Admin';
         const detalhesTexto = alteracoes.length > 0 ? alteracoes.join(" | ") : "Nenhuma alteração detectada";
-        
+
         await registrarLog(responsavel, `Editou usuário: ${form.nome}`, "EDIÇÃO", detalhesTexto);
-        
-        setUsuarios((prev) => prev.map((u) => (u.id === editId ? res.data : u)));
+
+        setUsuarios((prev) => prev.map((u) => (u.id === editId ? res : u)));
       } else {
         // Lógica de Cadastro Novo
         const agora = new Date();
         const criadoEm = `${agora.toLocaleDateString("pt-BR")} ${agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
-        
-        const res = await api.post("/usuarios", { 
-          ...dadosParaSalvar, 
-          senha, 
-          criadoEm 
+
+        const res = await api.post("/usuarios", {
+          ...dadosParaSalvar,
+          senha,
+          criadoEm
         });
-        setUsuarios((prev) => [...prev, res.data]);
-        
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+        setUsuarios((prev) => [...prev, res]);
+
+        const responsavel = usuarioLogado?.nome || 'Admin';
         await registrarLog(responsavel, `Cadastrou novo usuário: ${form.nome}`, "CADASTRO");
       }
       resetForm();
@@ -132,8 +134,8 @@ export default function CadastroUsuario() {
       try {
         await api.delete(`/usuarios/${id}`);
         setUsuarios((prev) => prev.filter((u) => u.id !== id));
-        
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+
+        const responsavel = usuarioLogado?.nome || 'Admin';
         await registrarLog(responsavel, `Excluiu usuário: ${usuarioRemovido?.nome}`, "EXCLUSÃO");
       } catch (err) {
         alert("Erro ao remover usuário.");
@@ -144,7 +146,7 @@ export default function CadastroUsuario() {
   return (
     <PageWrapper title="Gestão de Usuários">
       <div className="max-w-7xl mx-auto space-y-6 pb-10">
-        
+
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div className="w-full md:max-w-md flex items-center gap-3">
             <BarraPesquisa pesquisa={pesquisa} setPesquisa={setPesquisa} placeholder="Nome, CPF, cargo, e-mail..." />
@@ -163,7 +165,7 @@ export default function CadastroUsuario() {
             <form onSubmit={cadastrar} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <InputCPF label="CPF" name="cpf" value={form.cpf} onChange={handleChange} required />
               <Input label="Nome Completo" name="nome" value={form.nome} onChange={handleChange} required />
-              
+
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase ml-1">Status</label>
                 <select name="status" className="border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white outline-none transition-all" value={form.status} onChange={handleChange}>
@@ -174,7 +176,7 @@ export default function CadastroUsuario() {
 
               <Input label="E-mail" name="email" type="email" value={form.email} onChange={handleChange} required />
               <Input label="Confirmar E-mail" name="confirmarEmail" type="email" value={form.confirmarEmail} onChange={handleChange} required />
-              
+
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase ml-1">Perfil de Acesso</label>
                 <select name="perfil" className="border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white outline-none transition-all" value={form.perfil} onChange={handleChange} required>
@@ -230,7 +232,7 @@ export default function CadastroUsuario() {
                   <tr key={u.id} className="hover:bg-blue-50/30 transition-colors group">
                     <Td>
                       <div className="font-bold text-slate-800">{u.nome}</div>
-                      <div className="text-[10px] text-slate-500 flex items-center gap-1 font-mono uppercase"><MdEmail size={12}/>{u.email}</div>
+                      <div className="text-[10px] text-slate-500 flex items-center gap-1 font-mono uppercase"><MdEmail size={12} />{u.email}</div>
                     </Td>
                     <Td className="hidden lg:table-cell">
                       <div className="text-slate-700 text-sm font-medium">{u.cargo}</div>
@@ -263,11 +265,11 @@ function Input({ label, type = "text", name, ...props }) {
   return (
     <div className="flex flex-col w-full gap-1.5">
       <label className="text-xs font-bold text-slate-500 uppercase ml-1">{label}</label>
-      <input 
-        type={type} 
+      <input
+        type={type}
         name={name}
-        className="border border-slate-200 p-3 rounded-xl w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300" 
-        {...props} 
+        className="border border-slate-200 p-3 rounded-xl w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+        {...props}
       />
     </div>
   );

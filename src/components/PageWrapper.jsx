@@ -2,7 +2,7 @@ export default function PageWrapper({ title, children }) {
   return (
     /* mx-auto centraliza em telas gigantes, w-full garante 100% no mobile */
     <div className="w-full max-w-7xl mx-auto">
-      
+
       {title && (
         <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-800 px-1">
           {title}
@@ -15,7 +15,7 @@ export default function PageWrapper({ title, children }) {
         
         /* Cores: Ajustei para um tom mais claro para melhor leitura, 
            mas mantendo a sua paleta Slate */
-        bg-gradient-to-br from-slate-50 to-slate-200
+        bg-linear-to-br from-slate-50 to-slate-200
         border border-slate-300
         
         /* PADDING RESPONSIVO: 

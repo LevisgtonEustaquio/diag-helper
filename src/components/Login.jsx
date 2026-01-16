@@ -31,8 +31,8 @@ export default function Login() {
       const emailBusca = formData.email.trim().toLowerCase();
       
       // Busca o usuário por e-mail e senha no db.json através da API
-      const res = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
-      const usuario = res.data[0];
+      const usuarios = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
+      const usuario = Array.isArray(usuarios) ? usuarios[0] : usuarios;
 
       if (!usuario) {
         setMensagem("Credenciais inválidas ou e-mail/senha incorretos.");

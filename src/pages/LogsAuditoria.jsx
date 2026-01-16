@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import PageWrapper from "../components/PageWrapper";
 import {
-  MdSearch,
+  MdFileDownload,
   MdFilterList,
   MdHistory,
-  MdFileDownload,
+  MdSearch,
 } from "react-icons/md";
+import PageWrapper from "../components/PageWrapper";
 import api from "../services/api";
 
 export default function LogsAuditoria() {
@@ -16,8 +16,7 @@ export default function LogsAuditoria() {
   useEffect(() => {
     async function carregarLogs() {
       try {
-        const resposta = await api.get("/LogsAuditoria");
-        const dados = resposta.data;
+        const dados = await api.get("/LogsAuditoria");
 
         const dadosOrdenados = Array.isArray(dados)
           ? dados.sort((a, b) => new Date(b.data) - new Date(a.data))

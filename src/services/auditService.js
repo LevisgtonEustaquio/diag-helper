@@ -1,5 +1,5 @@
 
-import api from "./api"; 
+import api from "./api";
 
 export const registrarLog = async (usuario, acao, tipo, detalhes = null) => {
   const novoLog = {
@@ -12,7 +12,7 @@ export const registrarLog = async (usuario, acao, tipo, detalhes = null) => {
   };
 
   try {
-    // Usando axios (api) em vez de fetch para melhor performance e interceptores
+    // Usando o cliente API fetch unificado
     await api.post("/LogsAuditoria", novoLog);
   } catch (error) {
     console.error("Erro ao registrar log de auditoria:", error);

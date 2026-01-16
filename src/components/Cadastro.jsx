@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Cadastro() {
   const [formData, setFormData] = useState({
@@ -28,20 +29,9 @@ export default function Cadastro() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/cadastro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("usuario", JSON.stringify(data.usuario || data));
-        navigate("/app"); // Redireciona após cadastro
-      } else {
-        setMensagem(data.mensagem || "Erro ao processar a solicitação");
-      }
+      const usuario = await api.post("/usuarios", formData);
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+      navigate("/dashboard"); // Redireciona após cadastro
     } catch (error) {
       console.error(error);
       setMensagem("Erro de conexão com o servidor.");
