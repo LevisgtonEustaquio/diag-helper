@@ -857,6 +857,33 @@
       "detalhes": null,
       "data": "2026-01-14T16:15:01.891Z",
       "ip": "127.0.0.1"
+    },
+    {
+      "id": "e1b7",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-16T03:03:55.302Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d335",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-16T03:04:12.639Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "1a49",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-16T12:38:36.684Z",
+      "ip": "127.0.0.1"
     }
   ],
   "pacientes": [
