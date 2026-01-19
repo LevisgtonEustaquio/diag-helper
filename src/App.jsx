@@ -5,6 +5,7 @@ import Cadastro from "./components/Cadastro";
 import Login from "./components/Login";
 import AdminSolicitacoesSenha from "./pages/AdminSolicitacoesSuporte";
 import CadastroPacientes from "./pages/CadastroPacientes";
+import CadastroExames from "./pages/CadastroExames";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import Configuracoes from "./pages/Configuracoes";
 import Dashboard from "./pages/Dashboard";
@@ -65,6 +66,17 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+  path="/CadastroExames"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>     ESTÁ LINHA
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <CadastroExames />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
 
         <Route
           path="/CadastroUsuario"

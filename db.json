@@ -884,6 +884,339 @@
       "detalhes": null,
       "data": "2026-01-16T12:38:36.684Z",
       "ip": "127.0.0.1"
+    },
+    {
+      "id": "67af",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:48:52.022Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "a5e9",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:50:07.141Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "096c",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:50:20.843Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "da31",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:51:29.978Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "0c0a",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:52:28.044Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d74b",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:52:39.240Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "b09b",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:52:41.267Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "0493",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:53:21.381Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "dfc6",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:53:23.390Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "2c0a",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:53:32.024Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "6c31",
+      "usuario": "Joao Senna",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:55:26.691Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "02fa",
+      "usuario": "Joao Senna",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T20:55:40.883Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "90ce",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:00:34.852Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "9689",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:00:36.494Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "27c7",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:00:38.404Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "610b",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:48:38.195Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "6e32",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:48:59.999Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "c4eb",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:49:03.734Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "7298",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:49:05.235Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "8b26",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:49:18.134Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "d10e",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:49:32.422Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "f2e4",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:53:06.335Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "52f3",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:55:50.360Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "ae65",
+      "usuario": "Admin Sistema",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T21:55:57.901Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "4777",
+      "usuario": "Fulano Silva",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T22:11:38.387Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "130b",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T22:14:58.893Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "e9b4",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T22:40:21.187Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "90d8",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-17T23:55:52.929Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "bf1b",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Colesterol HDL) para Henrique Lima",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-17T23:58:46.913Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "f1e9",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Ácido Úrico) para Carlos Henrique Lima",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-17T23:59:12.777Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "f0b0",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Creatinina) para Carlos Henrique Lima",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-17T23:59:50.817Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "4517",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Realizou login no sistema",
+      "tipo": "LOGIN",
+      "detalhes": null,
+      "data": "2026-01-19T21:45:54.758Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "ccb2",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Hemograma Completo) para Genival Souza",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-19T21:46:44.511Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "b23a",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Mamografia) para Maria Ficticio da Silva",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-19T21:58:26.360Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "95b0",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Mamografia) para Maria Ficticio da Silva",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-19T21:58:48.428Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "c78d",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Hemograma Completo) para Maria Ficticio da Silva",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-19T21:59:46.082Z",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "0687",
+      "usuario": "Levisgton Eustáquio",
+      "acao": "Cadastrou/alterou exame (Eletrocardiograma) para Paciencio da Silva e Silva",
+      "tipo": "EXAME",
+      "detalhes": null,
+      "data": "2026-01-19T22:06:29.181Z",
+      "ip": "127.0.0.1"
     }
   ],
   "pacientes": [
@@ -973,10 +1306,74 @@
   ],
   "exames": [
     {
-      "tipo": "Hemograma",
-      "data": "2025-11-27",
-      "resultado": "Normal",
-      "id": "c344"
+      "id": "40e4",
+      "pacienteId": "7465",
+      "pacienteNome": "Henrique Lima",
+      "tipo": "Colesterol HDL",
+      "data": "2026-01-15",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "c63f",
+      "pacienteId": "7463",
+      "pacienteNome": "Carlos Henrique Lima",
+      "tipo": "Ácido Úrico",
+      "data": "2026-01-15",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "bfb7",
+      "pacienteId": "7463",
+      "pacienteNome": "Carlos Henrique Lima",
+      "tipo": "Creatinina",
+      "data": "2026-01-16",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "c769",
+      "pacienteId": "ce5b",
+      "pacienteNome": "Genival Souza",
+      "tipo": "Hemograma Completo",
+      "data": "2026-01-19",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "488c",
+      "pacienteId": "f503",
+      "pacienteNome": "Maria Ficticio da Silva",
+      "tipo": "Mamografia",
+      "data": "2026-01-18",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "c557",
+      "pacienteId": "f503",
+      "pacienteNome": "Maria Ficticio da Silva",
+      "tipo": "Hemograma Completo",
+      "data": "2026-01-18",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
+    },
+    {
+      "id": "3b07",
+      "pacienteId": "66dd",
+      "pacienteNome": "Paciencio da Silva e Silva",
+      "tipo": "Eletrocardiograma",
+      "data": "2026-01-17",
+      "resultado": "",
+      "arquivo": "download.webp",
+      "observacoes": ""
     }
   ]
 }
