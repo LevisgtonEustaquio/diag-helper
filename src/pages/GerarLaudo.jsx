@@ -10,7 +10,7 @@ import ModalProcessando from "../modals/ModalProcessando";
 
 // --- IMPORTAÇÃO DO SERVIÇO DE AUDITORIA ---
 import { MdCheckCircle, MdClose, MdCloudUpload, MdDescription, MdPersonSearch } from "react-icons/md";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
@@ -33,22 +33,34 @@ export default function GerarLaudo() {
   const usuarioLogado = usuario?.nome || "Usuário Sistema";
 
   useEffect(() => {
-    api
-      .get("/pacientes")
-      .then((data) => setPacientes(Array.isArray(data) ? data : []))
-      .catch(console.error);
+    const carregarPacientes = async () => {
+      try {
+        const data = await api.get("/pacientes");
+        setPacientes(Array.isArray(data) ? data : []);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Erro ao carregar pacientes:", error);
+        }
+      }
+    };
+    carregarPacientes();
   }, []);
 
   useEffect(() => {
-    api
-      .get("/usuarios")
-      .then((data) => {
+    const carregarMedicos = async () => {
+      try {
+        const data = await api.get("/usuarios");
         const medicosAtivos = data.filter(
           (u) => u.status === "Ativo" && (u.perfil === "medico" || u.cargo.includes("Médico"))
         );
         setMedicos(medicosAtivos);
-      })
-      .catch(console.error);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Erro ao carregar médicos:", error);
+        }
+      }
+    };
+    carregarMedicos();
   }, []);
 
   useEffect(() => {
@@ -74,8 +86,21 @@ export default function GerarLaudo() {
 
   // --- FUNÇÃO ATUALIZADA COM LOG DE AUDITORIA ---
   async function handleGerarLaudo() {
-    if (!medicoSelecionado || !pacienteSelecionado || !dataLaudo || imagens.length === 0) {
-      setModalAberto("falha");
+    // Validações
+    if (!medicoSelecionado) {
+      alert("Por favor, selecione um médico.");
+      return;
+    }
+    if (!pacienteSelecionado) {
+      alert("Por favor, selecione um paciente.");
+      return;
+    }
+    if (!dataLaudo) {
+      alert("Por favor, informe a data do laudo.");
+      return;
+    }
+    if (imagens.length === 0) {
+      alert("Por favor, adicione pelo menos uma imagem.");
       return;
     }
 
@@ -115,7 +140,9 @@ export default function GerarLaudo() {
       }, 1500);
 
     } catch (error) {
-      console.error("Erro ao processar laudo ou log:", error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Erro ao processar laudo ou log:", error);
+      }
       setModalAberto("falha");
     }
   }

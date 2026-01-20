@@ -6,7 +6,7 @@ import PageWrapper from "../components/PageWrapper";
 // Importações para Auditoria
 import InputCPF from "../components/InputCPF";
 import InputTelefone from "../components/InputTelefone";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 

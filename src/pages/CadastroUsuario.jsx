@@ -4,7 +4,7 @@ import BarraPesquisa from "../components/BarraPesquisa";
 import BotaoCadastrar from "../components/BotaoCadastrar";
 import InputCPF from "../components/InputCPF";
 import PageWrapper from "../components/PageWrapper";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
@@ -36,9 +36,17 @@ export default function CadastroUsuario() {
   };
 
   useEffect(() => {
-    api.get("/usuarios")
-      .then((res) => setUsuarios(Array.isArray(res) ? res : []))
-      .catch((err) => console.error("Erro ao carregar usuários:", err));
+    const carregarUsuarios = async () => {
+      try {
+        const res = await api.get("/usuarios");
+        setUsuarios(Array.isArray(res) ? res : []);
+      } catch (err) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Erro ao carregar usuários:", err);
+        }
+      }
+    };
+    carregarUsuarios();
   }, []);
 
   useEffect(() => {
@@ -69,8 +77,7 @@ export default function CadastroUsuario() {
     if (!editId && (senha !== confirmaSenha)) return setErroCadastro("As senhas não coincidem.");
 
     try {
-      const { confirmarEmail, ...dadosParaSalvar } = form;
-      dadosParaSalvar.email = dadosParaSalvar.email.toLowerCase();
+      const { confirmarEmail: _confirmarEmail, ...dadosParaSalvar } = form;
 
       if (editId) {
         // --- LÓGICA DE COMPARAÇÃO "DE -> PARA" ---
@@ -115,7 +122,7 @@ export default function CadastroUsuario() {
       }
       resetForm();
       setFormAtivo(false);
-    } catch (err) {
+    } catch (_err) {
       setErroCadastro("Erro ao processar solicitação.");
     }
   };
@@ -137,7 +144,7 @@ export default function CadastroUsuario() {
 
         const responsavel = usuarioLogado?.nome || 'Admin';
         await registrarLog(responsavel, `Excluiu usuário: ${usuarioRemovido?.nome}`, "EXCLUSÃO");
-      } catch (err) {
+      } catch (_err) {
         alert("Erro ao remover usuário.");
       }
     }

@@ -1,7 +1,8 @@
-import React from "react";
+import PropTypes from "prop-types";
+import { memo } from "react";
 import { MdAdd } from "react-icons/md";
 
-const BotaoCadastrar = ({ onClick, label = " Cadastrar" }) => {
+const BotaoCadastrar = memo(function BotaoCadastrar({ onClick, label = " Cadastrar" }) {
   return (
     <button
       onClick={onClick}
@@ -12,6 +13,11 @@ const BotaoCadastrar = ({ onClick, label = " Cadastrar" }) => {
       {label}
     </button>
   );
+});
+
+BotaoCadastrar.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  label: PropTypes.string,
 };
 
 export default BotaoCadastrar;

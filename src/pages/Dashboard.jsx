@@ -1,5 +1,5 @@
-import { useEffect, useState, memo } from "react";
 import PropTypes from "prop-types";
+import { memo, useEffect, useState } from "react";
 import { MdAnalytics, MdCheckCircle, MdPeople, MdPersonOff } from "react-icons/md";
 import DashboardChart from "../components/DashboardChart";
 import PageWrapper from "../components/PageWrapper";

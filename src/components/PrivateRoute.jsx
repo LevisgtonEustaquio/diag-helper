@@ -1,6 +1,6 @@
-import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function PrivateRoute({ children, perfisPermitidos }) {
   const { usuario, hasPerfil, loading } = useAuth();

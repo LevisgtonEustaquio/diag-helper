@@ -13,10 +13,10 @@
 //     // Filtramos para registrar apenas ações de alteração (POST, PUT, DELETE)
 //     // E evitamos registrar o próprio log para não entrar em loop infinito
 //     if (['post', 'put', 'delete'].includes(method.toLowerCase()) && !url.includes('LogsAuditoria')) {
-      
+
 //       // Pegamos o usuário do localStorage (ajuste conforme sua lógica de login)
 //       const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-      
+
 //       const acao = `Realizou ${method.toUpperCase()} na rota ${url}`;
 //       const tipo = 'INFO';
 
@@ -29,7 +29,7 @@
 //     // Registrar tentativas que falharam (importante para segurança)
 //     const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
 //     const acao = `FALHA: ${error.config?.method.toUpperCase()} em ${error.config?.url}`;
-    
+
 //     registrarLog(usuarioLogado, acao, 'ERRO');
 
 //     return Promise.reject(error);
@@ -68,7 +68,13 @@ class APIClient {
       ...(options.headers || {}),
     };
 
-    if (this.logger) { try { this.logger({ phase: 'request', method, url, body: options.body }); } catch {} }
+    if (this.logger) {
+      try {
+        this.logger({ phase: 'request', method, url, body: options.body });
+      } catch (_error) {
+        // Ignore logger errors
+      }
+    }
 
     const response = await fetch(url, { ...options, method, headers });
     const contentType = response.headers.get('content-type') || '';
@@ -76,7 +82,13 @@ class APIClient {
 
     if (!response.ok) {
       const errorBody = isJson ? await response.json().catch(() => null) : await response.text();
-      if (this.logger) { try { this.logger({ phase: 'error', method, url, status: response.status, body: errorBody }); } catch {} }
+      if (this.logger) {
+        try {
+          this.logger({ phase: 'error', method, url, status: response.status, body: errorBody });
+        } catch (_error) {
+          // Ignore logger errors
+        }
+      }
       const error = new Error(`HTTP ${response.status} ${response.statusText}`);
       error.status = response.status;
       error.body = errorBody;
@@ -84,7 +96,13 @@ class APIClient {
     }
 
     const data = isJson ? await response.json() : await response.text();
-    if (this.logger) { try { this.logger({ phase: 'response', method, url, status: response.status, body: data }); } catch {} }
+    if (this.logger) {
+      try {
+        this.logger({ phase: 'response', method, url, status: response.status, body: data });
+      } catch (_error) {
+        // Ignore logger errors
+      }
+    }
     return data;
   }
 

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { FcMenu } from "react-icons/fc";
 import Navbar from "./Navbar";
@@ -38,4 +39,10 @@ export default function MainLayout({ children, expanded, setExpanded }) {
     </div>
   );
 }
+
+MainLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+  expanded: PropTypes.bool.isRequired,
+  setExpanded: PropTypes.func.isRequired,
+};
 

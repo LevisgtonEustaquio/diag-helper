@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   FcBusinessman,
   FcClock,
@@ -10,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import logoFull from "../assets/6.svg";
 import logoIcon from "../assets/icon-diaghelper.svg";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import Logout from "./Logout";
 
 const menuItems = [
@@ -162,5 +163,10 @@ export default function Navbar({
   );
 }
 
-
+Navbar.propTypes = {
+  expanded: PropTypes.bool.isRequired,
+  setExpanded: PropTypes.func.isRequired,
+  mobileOpen: PropTypes.bool.isRequired,
+  setMobileOpen: PropTypes.func.isRequired,
+};
 
