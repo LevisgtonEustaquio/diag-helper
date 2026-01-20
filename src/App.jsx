@@ -102,18 +102,6 @@ function App() {
           }
         />
 
-        {/* <Route
-          path="/Laudo"
-          element={
-            <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
-              <MainLayout expanded={expanded} setExpanded={setExpanded}>
-                <Laudo />
-              </MainLayout>
-            </PrivateRoute>
-          }
-        /> */}
-
-        {/* ROTA DA LISTA DE LAUDOS */}
         <Route
           path="/Laudo"
           element={
@@ -125,7 +113,6 @@ function App() {
           }
         />
 
-        {/* NOVA ROTA: TELA DE ANÁLISE DETALHADA (Adicione esta abaixo) */}
         <Route
           path="/laudos/analise/:id"
           element={
