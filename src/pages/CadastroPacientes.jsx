@@ -30,10 +30,17 @@ export default function CadastroPacientes() {
       BUSCAR DADOS (API)
   =============================== */
   useEffect(() => {
-    api
-      .get("/pacientes")
-      .then((res) => setPacientes(Array.isArray(res) ? res : []))
-      .catch(console.error);
+    const carregarPacientes = async () => {
+      try {
+        const res = await api.get("/pacientes");
+        setPacientes(Array.isArray(res) ? res : []);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Erro ao carregar pacientes:", error);
+        }
+      }
+    };
+    carregarPacientes();
   }, []);
 
   /* ===============================
@@ -112,7 +119,10 @@ export default function CadastroPacientes() {
       }
       limparFormulario();
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Erro ao salvar paciente:", error);
+      }
+      alert("Erro ao salvar paciente. Tente novamente.");
     }
   };
 

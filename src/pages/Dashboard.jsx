@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
+import PropTypes from "prop-types";
 import { MdAnalytics, MdCheckCircle, MdPeople, MdPersonOff } from "react-icons/md";
 import DashboardChart from "../components/DashboardChart";
 import PageWrapper from "../components/PageWrapper";
@@ -7,18 +8,25 @@ import api from "../services/api";
 export default function Dashboard() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    api
-      .get("/usuarios")
-      .then((data) => {
-        setUsuarios(data);
+    const carregarUsuarios = async () => {
+      try {
+        const data = await api.get("/usuarios");
+        setUsuarios(Array.isArray(data) ? data : []);
+        setErro(null);
+      } catch (err) {
+        setErro("Erro ao carregar dados. Tente novamente.");
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Erro ao carregar usuários:", err);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Erro ao carregar usuários:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    carregarUsuarios();
   }, []);
 
   // Cálculos para os Cards de Indicadores
@@ -29,6 +37,13 @@ export default function Dashboard() {
   return (
     <PageWrapper title="Dashboard">
       <div className="max-w-7xl mx-auto space-y-6">
+
+        {/* Feedback de Erro */}
+        {erro && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            {erro}
+          </div>
+        )}
 
         {/* CARDS DE INDICADORES (KPIs) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -77,7 +92,7 @@ export default function Dashboard() {
 }
 
 /* COMPONENTE INTERNO: Card de Estatística */
-function StatCard({ title, value, icon, color }) {
+const StatCard = memo(function StatCard({ title, value, icon, color }) {
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 transition-transform hover:scale-[1.02]">
       <div className={`${color} p-3 rounded-xl text-white shadow-lg`}>
@@ -89,4 +104,11 @@ function StatCard({ title, value, icon, color }) {
       </div>
     </div>
   );
-}
+});
+
+StatCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  icon: PropTypes.node.isRequired,
+  color: PropTypes.string.isRequired,
+};

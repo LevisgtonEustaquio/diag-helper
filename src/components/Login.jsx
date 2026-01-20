@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { MdEmail, MdHelpOutline, MdLock, MdLogin } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { MdEmail, MdLock, MdPerson, MdLogin, MdHelpOutline } from "react-icons/md";
-import { registrarLog } from "../services/auditService"; 
-import api from "../services/api"; 
+import api from "../services/api";
+import { registrarLog } from "../services/auditService";
 
 import logo from "../assets/3.svg";
 
@@ -29,13 +29,16 @@ export default function Login() {
     try {
       // Normaliza o e-mail 
       const emailBusca = formData.email.trim().toLowerCase();
-      
-      // Busca o usuário por e-mail e senha no db.json através da API
-      const usuarios = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
-      const usuario = Array.isArray(usuarios) ? usuarios[0] : usuarios;
+
+      // Busca o usuário por e-mail (mais seguro do que enviar senha pela URL)
+      const usuarios = await api.get(`/usuarios?email=${emailBusca}`);
+      const usuariosArray = Array.isArray(usuarios) ? usuarios : [usuarios];
+
+      // Verifica a senha no lado do cliente (em produção, isso seria no backend)
+      const usuario = usuariosArray.find(u => u && u.senha === formData.senha);
 
       if (!usuario) {
-        setMensagem("Credenciais inválidas ou e-mail/senha incorretos.");
+        setMensagem("Credenciais inválidas. Verifique seu e-mail e senha.");
         setCarregando(false);
         return;
       }
@@ -57,8 +60,8 @@ export default function Login() {
       localStorage.setItem("usuarioPerfil", usuario.perfil);
       // localStorage.setItem("usuario", JSON.stringify(usuario));
       // Adiciona 'role' baseado no 'perfil' do usuário
-const usuarioParaNavbar = { ...usuario, role: usuario.perfil };
-localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
+      const usuarioParaNavbar = { ...usuario, role: usuario.perfil };
+      localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
 
 
       // Pequeno delay para o feedback do carregando antes de navegar
@@ -68,7 +71,13 @@ localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
 
     } catch (err) {
       console.error("Erro no login:", err);
-      setMensagem("Erro ao conectar com o servidor.");
+      if (err.status === 404) {
+        setMensagem("Serviço indisponível. Tente novamente mais tarde.");
+      } else if (err.status === 500) {
+        setMensagem("Erro no servidor. Contate o suporte.");
+      } else {
+        setMensagem("Erro ao conectar com o servidor. Verifique sua conexão.");
+      }
     } finally {
       setCarregando(false);
     }
@@ -77,7 +86,7 @@ localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 font-sans">
       <div className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row min-h-[550px]">
-        
+
         {/* LADO ESQUERDO: FORMULÁRIO */}
         <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           <div className="mb-8">
@@ -86,7 +95,7 @@ localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
           </div>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      
+
             {/* Email */}
             <div className="relative">
               <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -148,20 +157,20 @@ localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
 
         {/* LADO DIREITO: LOGO COM EFEITOS VISUAIS */}
         <div className="hidden md:flex w-1/2 bg-primary-500 items-center justify-center text-white flex-col p-12 relative overflow-hidden">
-           {/* Elemento Decorativo: Círculos de fundo */}
-           <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-600 rounded-full opacity-50 shadow-inner" />
-           <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary-700 rounded-full opacity-30" />
-          
-           <div className="relative z-10 flex flex-col items-center">
-             <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md mb-8">
-               <img src={logo} alt="Logo" className="w-48 brightness-0" />
-             </div>
-             <h2 className="text-4xl font-black text-text-primary mb-4 text-center">Gestão Médica Inteligente</h2>
-             <p className="text-center text-text-primary text-lg max-w-[280px]">
-               Tudo o que você precisa para gerenciar sua clínica em um só lugar.
+          {/* Elemento Decorativo: Círculos de fundo */}
+          <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-600 rounded-full opacity-50 shadow-inner" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary-700 rounded-full opacity-30" />
+
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md mb-8">
+              <img src={logo} alt="Logo" className="w-48 brightness-0" />
+            </div>
+            <h2 className="text-4xl font-black text-text-primary mb-4 text-center">Gestão Médica Inteligente</h2>
+            <p className="text-center text-text-primary text-lg max-w-[280px]">
+              Tudo o que você precisa para gerenciar sua clínica em um só lugar.
             </p>
-           </div>
-         </div>
+          </div>
+        </div>
 
       </div>
     </div>
