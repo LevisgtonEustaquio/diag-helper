@@ -17,7 +17,7 @@ import Logout from "./Logout";
 
 const menuItems = [
   { to: "/dashboard", icon: FcHome, label: "Dashboard" },
-  { to: "/GerarLaudo", icon: FcPlus, label: "Gerar laudo" },
+  { to: "/Laudo", icon: FcPlus, label: "Laudos" },
   { to: "/CadastroUsuario", icon: FcBusinessman, label: "Usuário" },
   { to: "/CadastroPacientes", icon: FcPortraitMode, label: "Paciente" },
   { to: "/CadastroExames", icon: FcPortraitMode, label: "Exames" },

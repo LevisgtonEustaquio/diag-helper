@@ -1,46 +1,6 @@
-// import axios from 'axios';
-// import { registrarLog } from './auditService';
-
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001', // Sua URL base do json-server
-// });
-
-// // Interceptor de Resposta: Registra log após o sucesso da operação
-// api.interceptors.response.use(
-//   (response) => {
-//     const { method, url } = response.config;
-
-//     // Filtramos para registrar apenas ações de alteração (POST, PUT, DELETE)
-//     // E evitamos registrar o próprio log para não entrar em loop infinito
-//     if (['post', 'put', 'delete'].includes(method.toLowerCase()) && !url.includes('LogsAuditoria')) {
-      
-//       // Pegamos o usuário do localStorage (ajuste conforme sua lógica de login)
-//       const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-      
-//       const acao = `Realizou ${method.toUpperCase()} na rota ${url}`;
-//       const tipo = 'INFO';
-
-//       registrarLog(usuarioLogado, acao, tipo);
-//     }
-
-//     return response;
-//   },
-//   (error) => {
-//     // Registrar tentativas que falharam (importante para segurança)
-//     const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-//     const acao = `FALHA: ${error.config?.method.toUpperCase()} em ${error.config?.url}`;
-    
-//     registrarLog(usuarioLogado, acao, 'ERRO');
-
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default api;
-
 class APIClient {
   constructor() {
-    this.baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+    this.baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
     this.defaultHeaders = {};
     this.logger = null;
   }
