@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { MdEmail, MdHelpOutline, MdLock, MdLogin } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
 import logo from "../assets/3.svg";
 
 export default function Login() {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     perfil: "", // Alinhado com o campo 'perfil' do seu CadastroUsuario
     email: "",
@@ -55,14 +57,14 @@ export default function Login() {
       // Registro de Auditoria
       await registrarLog(usuario.nome, "Realizou login no sistema", "LOGIN");
 
-      // Salva no LocalStorage para manter a sessão no Diag Helper
+      // Usa o método login do AuthContext para salvar usuário corretamente
+      // Adiciona 'role' baseado no 'perfil' do usuário para compatibilidade
+      const usuarioCompleto = { ...usuario, role: usuario.perfil };
+      login(usuarioCompleto);
+
+      // Mantém dados adicionais no localStorage para retrocompatibilidade
       localStorage.setItem("usuarioNome", usuario.nome);
       localStorage.setItem("usuarioPerfil", usuario.perfil);
-      // localStorage.setItem("usuario", JSON.stringify(usuario));
-      // Adiciona 'role' baseado no 'perfil' do usuário
-      const usuarioParaNavbar = { ...usuario, role: usuario.perfil };
-      localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
-
 
       // Pequeno delay para o feedback do carregando antes de navegar
       setTimeout(() => {

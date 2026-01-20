@@ -31,16 +31,14 @@ export default function Navbar({
   setMobileOpen,
 }) {
   // Busca o usuário via contexto de autenticação
-  // Fallback apenas visual caso não haja usuário
   const { usuario } = useAuth();
 
-  const safeUser = usuario || {
-    nome: "Usuário Padrão",
-    email: "admin@app.com",
-    role: "administrador",
-  };
+  // Se não houver usuário autenticado, não deve exibir a navbar
+  if (!usuario) {
+    return null;
+  }
 
-  const perfil = safeUser?.perfil || safeUser?.role || safeUser?.tipoUsuario;
+  const perfil = usuario.perfil || usuario.role || usuario.tipoUsuario;
 
   const avatarPorTipo = {
     recepcionista:
@@ -53,7 +51,7 @@ export default function Navbar({
 
   const avatarFinal =
     avatarPorTipo[perfil] ||
-    safeUser?.avatarUrl ||
+    usuario?.avatarUrl ||
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=2.25&w=256&q=80";
 
 

@@ -99,7 +99,7 @@ export default function CadastroUsuario() {
         });
 
         // Registro do Log com os Detalhes das mudanças
-        const responsavel = usuarioLogado?.nome || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Sistema';
         const detalhesTexto = alteracoes.length > 0 ? alteracoes.join(" | ") : "Nenhuma alteração detectada";
 
         await registrarLog(responsavel, `Editou usuário: ${form.nome}`, "EDIÇÃO", detalhesTexto);
@@ -117,7 +117,7 @@ export default function CadastroUsuario() {
         });
         setUsuarios((prev) => [...prev, res]);
 
-        const responsavel = usuarioLogado?.nome || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Sistema';
         await registrarLog(responsavel, `Cadastrou novo usuário: ${form.nome}`, "CADASTRO");
       }
       resetForm();

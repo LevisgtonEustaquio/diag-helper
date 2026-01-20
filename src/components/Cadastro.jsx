@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import api from "../services/api";
 
 export default function Cadastro() {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     nome: "",
     cpf: "",
@@ -30,10 +32,13 @@ export default function Cadastro() {
 
     try {
       const usuario = await api.post("/usuarios", formData);
-      localStorage.setItem("usuario", JSON.stringify(usuario));
+      // Usa o método login do AuthContext para autenticar após cadastro
+      login(usuario);
       navigate("/dashboard"); // Redireciona após cadastro
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Erro no cadastro:", error);
+      }
       setMensagem("Erro de conexão com o servidor.");
     }
   };
