@@ -10,7 +10,6 @@ import logo from "../assets/3.svg";
 export default function Login() {
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    perfil: "", // Alinhado com o campo 'perfil' do seu CadastroUsuario
     email: "",
     senha: "",
   });
@@ -29,15 +28,11 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      // Normaliza o e-mail 
       const emailBusca = formData.email.trim().toLowerCase();
 
-      // Busca o usuário por e-mail (mais seguro do que enviar senha pela URL)
-      const usuarios = await api.get(`/usuarios?email=${emailBusca}`);
-      const usuariosArray = Array.isArray(usuarios) ? usuarios : [usuarios];
-
-      // Verifica a senha no lado do cliente (em produção, isso seria no backend)
-      const usuario = usuariosArray.find(u => u && u.senha === formData.senha);
+      //Solução provisória
+      const usuarios = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
+      const usuario = Array.isArray(usuarios.data) ? usuarios.data[0] : usuarios[0];
 
       if (!usuario) {
         setMensagem("Credenciais inválidas. Verifique seu e-mail e senha.");
@@ -45,15 +40,12 @@ export default function Login() {
         return;
       }
 
-
-      // Verificação de Status
       if (usuario.status === "Inativo") {
         setMensagem("Este usuário está inativo. Contate o administrador.");
         setCarregando(false);
         return;
       }
 
-      // --- SUCESSO NO LOGIN ---
       // Registro de Auditoria
       await registrarLog(usuario.nome, "Realizou login no sistema", "LOGIN");
 
@@ -97,8 +89,6 @@ export default function Login() {
           </div>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-
-            {/* Email */}
             <div className="relative">
               <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -112,7 +102,6 @@ export default function Login() {
               />
             </div>
 
-            {/* Senha */}
             <div className="relative">
               <MdLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -126,11 +115,13 @@ export default function Login() {
               />
             </div>
 
-            {mensagem && (
-              <p className="text-sm text-red-600 font-semibold text-center bg-red-50 p-2 rounded border border-red-100">
-                {mensagem}
-              </p>
-            )}
+            {
+              mensagem && (
+                <p className="text-sm text-red-600 font-semibold text-center bg-red-50 p-2 rounded border border-red-100">
+                  {mensagem}
+                </p>
+              )
+            }
 
             <button
               disabled={carregando}
@@ -154,11 +145,11 @@ export default function Login() {
               <MdHelpOutline size={16} />
               Esqueci minha senha / Suporte
             </button>
-          </form>
-        </div>
+          </form >
+        </div >
 
         {/* LADO DIREITO: LOGO COM EFEITOS VISUAIS */}
-        <div className="hidden md:flex w-1/2 bg-primary-500 items-center justify-center text-white flex-col p-12 relative overflow-hidden">
+        < div className="hidden md:flex w-1/2 bg-primary-500 items-center justify-center text-white flex-col p-12 relative overflow-hidden" >
           {/* Elemento Decorativo: Círculos de fundo */}
           <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-600 rounded-full opacity-50 shadow-inner" />
           <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary-700 rounded-full opacity-30" />
@@ -173,8 +164,7 @@ export default function Login() {
             </p>
           </div>
         </div>
-
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

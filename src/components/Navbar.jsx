@@ -7,6 +7,8 @@ import {
   FcPortraitMode,
   FcSettings,
   FcUnlock,
+  FcInspection,
+
 } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import logoFull from "../assets/6.svg";
@@ -16,9 +18,10 @@ import Logout from "./Logout";
 
 const menuItems = [
   { to: "/dashboard", icon: FcHome, label: "Dashboard" },
-  { to: "/GerarLaudo", icon: FcPlus, label: "Gerar laudo" },
+  { to: "/Laudo", icon: FcPlus, label: "Laudos" },
   { to: "/CadastroUsuario", icon: FcBusinessman, label: "Usuário" },
   { to: "/CadastroPacientes", icon: FcPortraitMode, label: "Paciente" },
+  { to: "/CadastroExames", icon: FcPortraitMode, label: "Exames" },
   { to: "/AdminSolicitacoesSenha", icon: FcUnlock, label: "Solicitações de Senha" },
   { to: "/LogsAuditoria", icon: FcClock, label: "Logs de Auditoria" },
   { to: "/configuracoes", icon: FcSettings, label: "Configurações" },
