@@ -16,7 +16,7 @@ const data = [
   { name: "Total de Usuários", value: 5, icon: <MdPeople /> },
   { name: "Usuários Ativos", value: 3, icon: <MdCheckCircle /> },
   { name: "Usuários Inativos", value: 2, icon: <MdCancel /> },
-  { name: "Solicitações", value: 2, icon: <MdLockReset /> },
+  { name: "Tickets", value: 2, icon: <MdLockReset /> },
 ];
 
 export default function Dashboard() {
