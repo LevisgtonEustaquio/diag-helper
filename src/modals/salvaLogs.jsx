@@ -1,6 +1,6 @@
 import api from "../services/api";
 
-export function salvaLogs(acao, tipo = "GERAL", usuarioNome = "Desconhecido") {
+export async function salvaLogs(acao, tipo = "GERAL", usuarioNome = "Desconhecido") {
   const log = {
     usuario: usuarioNome,
     acao: acao,
@@ -9,8 +9,13 @@ export function salvaLogs(acao, tipo = "GERAL", usuarioNome = "Desconhecido") {
     ip: "127.0.0.1"
   };
 
-  api
-    .post("/LogsAuditoria", log)
-    .then(() => console.log("Log salvo:", log))
-    .catch((err) => console.error("Erro ao salvar log:", err));
+  try {
+    await api.post("/LogsAuditoria", log);
+    return true;
+  } catch (err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Erro ao salvar log:", err);
+    }
+    return false;
+  }
 }

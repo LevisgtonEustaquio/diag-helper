@@ -1,14 +1,14 @@
 import { Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
-export default function SpinnerLucide({ size = 32, color = "text-green-600" }) {
+export default function SpinnerLucide({ color = "text-green-600" }) {
   return (
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-      className="inline-block"
-    >
+    <div className="inline-block animate-spin">
       <Loader2 size={64} className={color} />
-    </motion.div>
+    </div>
   );
 }
+
+SpinnerLucide.propTypes = {
+  color: PropTypes.string,
+};

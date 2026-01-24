@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import ModalConfirmarSaida from "../modals/ModalConfirmarSaida";
@@ -14,11 +15,11 @@ export default function Logout({ expanded }) {
           ${expanded ? "items-start" : "items-center"}
         `}
       >
-        <FiLogOut 
-          size={24} 
-          className="text-red-500 transition-transform duration-200 group-hover:scale-110" 
+        <FiLogOut
+          size={24}
+          className="text-red-500 transition-transform duration-200 group-hover:scale-110"
         />
-        
+
         <p className={`
           text-red-500 text-xs font-semibold transition-all duration-300 mt-0.5
           ${expanded ? "opacity-100" : "md:opacity-0 md:h-0 md:overflow-hidden"}
@@ -34,3 +35,7 @@ export default function Logout({ expanded }) {
     </>
   );
 }
+
+Logout.propTypes = {
+  expanded: PropTypes.bool,
+};

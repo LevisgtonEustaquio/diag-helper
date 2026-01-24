@@ -1,4 +1,7 @@
-export default function PageWrapper({ title, children }) {
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+const PageWrapper = memo(function PageWrapper({ title, children }) {
   return (
     /* mx-auto centraliza em telas gigantes, w-full garante 100% no mobile */
     <div className="w-full max-w-7xl mx-auto">
@@ -30,4 +33,11 @@ export default function PageWrapper({ title, children }) {
       </div>
     </div>
   );
-}
+});
+
+PageWrapper.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+export default PageWrapper;
