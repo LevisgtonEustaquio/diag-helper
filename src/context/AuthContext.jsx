@@ -1,60 +1,44 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export const AuthContext = createContext(null);
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [usuario, setUsuario] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         try {
             const raw = localStorage.getItem("usuario");
             if (raw) setUsuario(JSON.parse(raw));
-        } catch (error) {
-            console.error("Erro ao carregar usuário do localStorage:", error);
+        } catch {
             setUsuario(null);
-        } finally {
-            setLoading(false);
         }
     }, []);
 
-    const login = useCallback((userObj) => {
+    const login = (userObj) => {
         setUsuario(userObj);
-        try {
-            localStorage.setItem("usuario", JSON.stringify(userObj));
-        } catch (error) {
-            console.error("Erro ao salvar usuário no localStorage:", error);
-        }
-    }, []);
+        try { localStorage.setItem("usuario", JSON.stringify(userObj)); } catch { }
+    };
 
-    const logout = useCallback(() => {
+    const logout = () => {
         setUsuario(null);
-        try {
-            localStorage.removeItem("usuario");
-        } catch (error) {
-            console.error("Erro ao remover usuário do localStorage:", error);
-        }
-    }, []);
+        try { localStorage.removeItem("usuario"); } catch { }
+    };
 
-    const hasPerfil = useCallback((perfisPermitidos) => {
+    const hasPerfil = (perfisPermitidos) => {
         if (!usuario) return false;
         const perfil = usuario.perfil || usuario.role || usuario.tipoUsuario;
         if (!perfil) return false;
         return Array.isArray(perfisPermitidos)
             ? perfisPermitidos.includes(perfil)
             : true;
-    }, [usuario]);
+    };
 
-    const value = useMemo(() => ({
-        usuario,
-        login,
-        logout,
-        hasPerfil,
-        loading
-    }), [usuario, login, logout, hasPerfil, loading]);
-
+    const value = useMemo(() => ({ usuario, login, logout, hasPerfil }), [usuario]);
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export default AuthProvider;
+export function useAuth() {
+    const ctx = useContext(AuthContext);
+    if (!ctx) throw new Error("useAuth deve ser usado com AuthProvider");
+    return ctx;
+}

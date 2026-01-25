@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   FcBusinessman,
   FcClock,
@@ -13,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import logoFull from "../assets/6.svg";
 import logoIcon from "../assets/icon-diaghelper.svg";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import Logout from "./Logout";
 
 const menuItems = [
@@ -34,14 +33,16 @@ export default function Navbar({
   setMobileOpen,
 }) {
   // Busca o usuário via contexto de autenticação
+  // Fallback apenas visual caso não haja usuário
   const { usuario } = useAuth();
 
-  // Se não houver usuário autenticado, não deve exibir a navbar
-  if (!usuario) {
-    return null;
-  }
+  const safeUser = usuario || {
+    nome: "Usuário Padrão",
+    email: "admin@app.com",
+    role: "administrador",
+  };
 
-  const perfil = usuario.perfil || usuario.role || usuario.tipoUsuario;
+  const perfil = safeUser?.perfil || safeUser?.role || safeUser?.tipoUsuario;
 
   const avatarPorTipo = {
     recepcionista:
@@ -54,7 +55,7 @@ export default function Navbar({
 
   const avatarFinal =
     avatarPorTipo[perfil] ||
-    usuario?.avatarUrl ||
+    safeUser?.avatarUrl ||
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=2.25&w=256&q=80";
 
 
@@ -164,10 +165,5 @@ export default function Navbar({
   );
 }
 
-Navbar.propTypes = {
-  expanded: PropTypes.bool.isRequired,
-  setExpanded: PropTypes.func.isRequired,
-  mobileOpen: PropTypes.bool.isRequired,
-  setMobileOpen: PropTypes.func.isRequired,
-};
+
 
