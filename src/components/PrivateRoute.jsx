@@ -11,6 +11,6 @@ export default function PrivateRoute({ children, perfisPermitidos }) {
   if (perfisPermitidos && !hasPerfil(perfisPermitidos)) {
     return <Navigate to="/dashboard" replace />;
   }
-
+  
   return children;
 }
