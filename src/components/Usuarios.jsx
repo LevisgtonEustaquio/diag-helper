@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import Layout from "../components/Navbar";
+import { carregarUsuarios, salvarUsuarios } from "../data/dadosUsuarios"; 
 
-// NOTA: Este componente parece ser legado e não está sendo usado atualmente
-// Considere removê-lo ou refatorá-lo para usar a estrutura atual
 export default function Usuarios() {
-  const ehAdministrador = true;
+  const ehAdministrador = true; 
   const [novoUserFormData, setNovoUserFormData] = useState({ nome: "", email: "", senha: "", confirmaSenha: "", tipoUsuario: "medico" });
   const [erroNovoUser, setErroNovoUser] = useState("");
 
@@ -37,7 +37,7 @@ export default function Usuarios() {
               <label className="font-medium">Tipo de Usuário:</label>
               <select name="tipoUsuario" value={novoUserFormData.tipoUsuario} onChange={handleNovoUserChange} className="w-full border p-3 rounded-lg mt-2">
                 <option value="medico">Médico Laudista</option>
-                <option value="medico">Médico Assistente</option>
+                 <option value="medico">Médico Assistente</option>
                 <option value="recepcionista">Recepcionista</option>
                 <option value="administrador">Administrador</option>
               </select>

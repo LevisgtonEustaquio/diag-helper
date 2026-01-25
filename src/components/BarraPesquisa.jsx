@@ -1,8 +1,7 @@
-import { Search } from "lucide-react";
-import PropTypes from "prop-types";
-import { memo } from "react";
+import React from "react";
+import { Search } from "lucide-react"; 
 
-const BarraPesquisa = memo(function BarraPesquisa({ pesquisa, setPesquisa, placeholder }) {
+const BarraPesquisa = ({ pesquisa, setPesquisa, placeholder }) => {
   return (
     <div className="relative w-full group">
 
@@ -10,7 +9,7 @@ const BarraPesquisa = memo(function BarraPesquisa({ pesquisa, setPesquisa, place
         <Search size={18} />
       </div>
 
-      <input
+    <input
         type="text"
         placeholder={placeholder || "Pesquisar paciente por nome ou CPF..."}
         value={pesquisa}
@@ -36,12 +35,6 @@ const BarraPesquisa = memo(function BarraPesquisa({ pesquisa, setPesquisa, place
       />
     </div>
   );
-});
-
-BarraPesquisa.propTypes = {
-  pesquisa: PropTypes.string.isRequired,
-  setPesquisa: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
 };
 
 export default BarraPesquisa;

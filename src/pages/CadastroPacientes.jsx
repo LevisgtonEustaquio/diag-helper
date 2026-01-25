@@ -6,7 +6,7 @@ import PageWrapper from "../components/PageWrapper";
 // Importações para Auditoria
 import InputCPF from "../components/InputCPF";
 import InputTelefone from "../components/InputTelefone";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
@@ -30,17 +30,10 @@ export default function CadastroPacientes() {
       BUSCAR DADOS (API)
   =============================== */
   useEffect(() => {
-    const carregarPacientes = async () => {
-      try {
-        const res = await api.get("/pacientes");
-        setPacientes(Array.isArray(res) ? res : []);
-      } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error("Erro ao carregar pacientes:", error);
-        }
-      }
-    };
-    carregarPacientes();
+    api
+      .get("/pacientes")
+      .then((res) => setPacientes(Array.isArray(res) ? res : []))
+      .catch(console.error);
   }, []);
 
   /* ===============================
@@ -119,10 +112,7 @@ export default function CadastroPacientes() {
       }
       limparFormulario();
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error("Erro ao salvar paciente:", error);
-      }
-      alert("Erro ao salvar paciente. Tente novamente.");
+      console.error(error);
     }
   };
 

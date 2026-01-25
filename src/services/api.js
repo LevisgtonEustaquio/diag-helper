@@ -1,43 +1,3 @@
-// import axios from 'axios';
-// import { registrarLog } from './auditService';
-
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001', // Sua URL base do json-server
-// });
-
-// // Interceptor de Resposta: Registra log após o sucesso da operação
-// api.interceptors.response.use(
-//   (response) => {
-//     const { method, url } = response.config;
-
-//     // Filtramos para registrar apenas ações de alteração (POST, PUT, DELETE)
-//     // E evitamos registrar o próprio log para não entrar em loop infinito
-//     if (['post', 'put', 'delete'].includes(method.toLowerCase()) && !url.includes('LogsAuditoria')) {
-
-//       // Pegamos o usuário do localStorage (ajuste conforme sua lógica de login)
-//       const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-
-//       const acao = `Realizou ${method.toUpperCase()} na rota ${url}`;
-//       const tipo = 'INFO';
-
-//       registrarLog(usuarioLogado, acao, tipo);
-//     }
-
-//     return response;
-//   },
-//   (error) => {
-//     // Registrar tentativas que falharam (importante para segurança)
-//     const usuarioLogado = localStorage.getItem('usuarioNome') || 'Usuário Desconhecido';
-//     const acao = `FALHA: ${error.config?.method.toUpperCase()} em ${error.config?.url}`;
-
-//     registrarLog(usuarioLogado, acao, 'ERRO');
-
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default api;
-
 class APIClient {
   constructor() {
     this.baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
@@ -68,13 +28,7 @@ class APIClient {
       ...(options.headers || {}),
     };
 
-    if (this.logger) {
-      try {
-        this.logger({ phase: 'request', method, url, body: options.body });
-      } catch (_error) {
-        // Ignore logger errors
-      }
-    }
+    if (this.logger) { try { this.logger({ phase: 'request', method, url, body: options.body }); } catch {} }
 
     const response = await fetch(url, { ...options, method, headers });
     const contentType = response.headers.get('content-type') || '';
@@ -82,13 +36,7 @@ class APIClient {
 
     if (!response.ok) {
       const errorBody = isJson ? await response.json().catch(() => null) : await response.text();
-      if (this.logger) {
-        try {
-          this.logger({ phase: 'error', method, url, status: response.status, body: errorBody });
-        } catch (_error) {
-          // Ignore logger errors
-        }
-      }
+      if (this.logger) { try { this.logger({ phase: 'error', method, url, status: response.status, body: errorBody }); } catch {} }
       const error = new Error(`HTTP ${response.status} ${response.statusText}`);
       error.status = response.status;
       error.body = errorBody;
@@ -96,13 +44,7 @@ class APIClient {
     }
 
     const data = isJson ? await response.json() : await response.text();
-    if (this.logger) {
-      try {
-        this.logger({ phase: 'response', method, url, status: response.status, body: data });
-      } catch (_error) {
-        // Ignore logger errors
-      }
-    }
+    if (this.logger) { try { this.logger({ phase: 'response', method, url, status: response.status, body: data }); } catch {} }
     return data;
   }
 
