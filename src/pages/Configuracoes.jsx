@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MdDeleteSweep, MdPerson, MdSave } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
 export default function Configuracoes() {
@@ -55,10 +55,8 @@ export default function Configuracoes() {
       setNovaSenha("");
       setConfirmaSenha("");
     } catch (err) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error("Erro ao salvar configurações:", err);
-      }
-      alert("Erro ao salvar alterações. Tente novamente.");
+      console.error(err);
+      alert("Erro ao salvar alterações");
     }
   };
 

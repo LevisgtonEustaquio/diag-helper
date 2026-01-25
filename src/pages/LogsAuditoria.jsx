@@ -24,9 +24,7 @@ export default function LogsAuditoria() {
 
         setLogs(dadosOrdenados);
       } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error("Erro ao carregar logs:", error);
-        }
+        console.error("Erro ao carregar logs:", error);
       }
     }
     carregarLogs();
