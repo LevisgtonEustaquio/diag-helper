@@ -10,7 +10,7 @@ import {
   MdCheckCircle,
 } from "react-icons/md";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext"; // Importação do contexto
+import { useAuth } from "../hooks/useAuth";
 import { registrarLog } from "../services/auditService"; // Importação do serviço de log
 
 export default function Laudo() {

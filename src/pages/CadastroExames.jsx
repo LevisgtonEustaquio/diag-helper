@@ -15,7 +15,7 @@ import {
   MdNavigateNext,
 } from "react-icons/md";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { registrarLog } from "../services/auditService";
 import { TIPOS_EXAMES } from "../components/ListaExames";
 
