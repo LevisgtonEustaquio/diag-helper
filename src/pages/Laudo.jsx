@@ -146,7 +146,7 @@ export default function Laudo() {
             setPesquisa={setPesquisa}
             placeholder="Filtrar exames..."
           />
-          <div className="text-sm text-slate-500 font-medium">
+          <div className="text-sm text-slate-500 font-medium ml-5">
             {examesProcessados.length} exames encontrados
           </div>
         </div>
