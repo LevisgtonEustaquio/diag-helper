@@ -4,8 +4,8 @@ import BotaoCadastrar from "../components/BotaoCadastrar";
 import BarraPesquisa from "../components/BarraPesquisa";
 import ModalErro from "../modals/ModalErro";
 import ModalAviso from "../modals/ModalAviso";
-import ModalForm from "../modals/ModalForm"; // Novo componente de moldura
-import FormularioExame from "../components/FormularioExame"; // Componente com os campos
+import ModalForm from "../modals/ModalForm"; 
+import FormularioExame from "../components/FormularioExame";
 import ModalGaleria from "../modals/ModalGaleria";
 import {
   MdEdit,
@@ -28,7 +28,7 @@ export default function CadastroExames() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [exameParaEditar, setExameParaEditar] = useState(null);
 
-  // Estados da Galeria (Originais)
+  // Estados da Galeria
   const [modalArquivos, setModalArquivos] = useState(null);
   const [indiceArquivoAtual, setIndiceArquivoAtual] = useState(0);
 
@@ -153,7 +153,7 @@ export default function CadastroExames() {
           />
         </div>
 
-        {/* MODAL DO FORMULÁRIO (Componente Reutilizável) */}
+        {/* MODAL DO FORMULÁRIO */}
         <ModalForm
           isOpen={mostrarFormulario}
           onClose={() => { setMostrarFormulario(false); setExameParaEditar(null); }}
@@ -169,7 +169,7 @@ export default function CadastroExames() {
           />
         </ModalForm>
 
-        {/* TABELA DE LISTAGEM (Estilização Original Mantida) */}
+        {/* TABELA DE LISTAGEM */}
         <section className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
           <div className="overflow-x-auto">
             <table className="w-full text-left">

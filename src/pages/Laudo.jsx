@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
 import BarraPesquisa from "../components/BarraPesquisa";
-import BotaoCadastrar from "../components/BotaoCadastrar"; // Novo Import
+import BotaoCadastrar from "../components/BotaoCadastrar"; 
 import ModalErro from "../modals/ModalErro";
 import ModalAviso from "../modals/ModalAviso";
-import ModalForm from "../modals/ModalForm"; // Novo Import
-import FormularioExame from "../components/FormularioExame"; // Novo Import
+import ModalForm from "../modals/ModalForm"; 
+import FormularioExame from "../components/FormularioExame"; 
 import {
   MdPictureAsPdf,
   MdHourglassEmpty,
@@ -20,9 +20,9 @@ import { registrarLog } from "../services/auditService";
 export default function Laudo() {
   const { usuario: usuarioLogado } = useAuth();
   const [exames, setExames] = useState([]);
-  const [pacientes, setPacientes] = useState([]); // Necessário para o FormularioExame
+  const [pacientes, setPacientes] = useState([]); 
   const [pesquisa, setPesquisa] = useState("");
-  const [mostrarFormulario, setMostrarFormulario] = useState(false); // Controle do Modal
+  const [mostrarFormulario, setMostrarFormulario] = useState(false); 
   const [ordenacao, setOrdenacao] = useState({ campo: "data", direcao: "desc" });
   const [itemSelecionado, setItemSelecionado] = useState(null);
   const navigate = useNavigate();

@@ -5,7 +5,6 @@ import {
   FcPlus,
   FcPortraitMode,
   FcSettings,
-  FcUnlock,
   FcAddImage
 } from "react-icons/fc";
 import { Link } from "react-router-dom";
@@ -25,7 +24,7 @@ const menuItems = [
   { to: "/CadastroUsuario", icon: FcBusinessman, label: "Usuário", roles: ADMIN_ONLY },
   { to: "/CadastroPacientes", icon: FcPortraitMode, label: "Paciente", roles: ALL_USERS },
   { to: "/CadastroExames", icon: FcAddImage, label: "Exames", roles: ALL_USERS },
-  { to: "/AdminSolicitacoesSenha", icon: FcUnlock, label: "Suporte", roles: ADMIN_ONLY },
+  // { to: "/AdminSolicitacoesSenha", icon: FcUnlock, label: "Suporte", roles: ADMIN_ONLY }, desabilitado temporariamente
   { to: "/LogsAuditoria", icon: FcClock, label: "Logs de Auditoria", roles: ADMIN_ONLY },
   { to: "/configuracoes", icon: FcSettings, label: "Configurações", roles: ALL_USERS },
 ];

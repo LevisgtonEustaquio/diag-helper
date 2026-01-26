@@ -101,7 +101,10 @@ export default function Suporte() {
           </p>
         </div>
 
-        <div className="mt-10 border-t pt-6">
+
+        {/* Formulário de solicitação de suporte desativado temporariamente, pois estamos focados em outros canais de atendimento. */}
+            
+        {/* <div className="mt-10 border-t pt-6">
           <h2 className="font-bold text-lg mb-4 text-slate-700">
             Solicitação para o administrador
           </h2>
@@ -137,7 +140,7 @@ export default function Suporte() {
           >
             Enviar solicitação
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
