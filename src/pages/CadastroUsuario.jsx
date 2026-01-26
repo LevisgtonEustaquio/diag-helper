@@ -3,10 +3,43 @@ import { MdCancel, MdDeleteOutline, MdEdit, MdEmail, MdPersonAdd, MdSaveAlt } fr
 import BarraPesquisa from "../components/BarraPesquisa";
 import BotaoCadastrar from "../components/BotaoCadastrar";
 import InputCPF from "../components/InputCPF";
+import InputEmail from "../components/InputEmail";
+import InputPassword from "../components/InputPassword";
 import PageWrapper from "../components/PageWrapper";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
+
+
+const validarFormulario = ({ form, senha, confirmaSenha, editId }) => {
+  if (!form.nome.trim()) return "Nome é obrigatório.";
+
+  if (!form.cpf || form.cpf.replace(/\D/g, "").length !== 11)
+    return "CPF inválido.";
+
+  if (!form.email.trim()) return "E-mail é obrigatório.";
+
+  const email = form.email?.trim().toLowerCase();
+  const confirmarEmail = form.confirmarEmail?.trim().toLowerCase();
+
+  if (email !== confirmarEmail)
+    return "Os e-mails não coincidem.";
+
+  if (!form.perfil) return "Perfil de acesso é obrigatório.";
+
+  if (!form.cargo) return "Cargo é obrigatório.";
+
+  if (!editId) {
+    if (editId && senha && senha.length < 6) {
+      return "A nova senha deve ter no mínimo 6 caracteres.";
+    }
+
+    if (senha !== confirmaSenha)
+      return "As senhas não coincidem.";
+  }
+
+  return null;
+};
 
 export default function CadastroUsuario() {
   const { usuario: usuarioLogado } = useAuth();
@@ -65,11 +98,14 @@ export default function CadastroUsuario() {
     e.preventDefault();
     setErroCadastro("");
 
-    if (form.email !== form.confirmarEmail) return setErroCadastro("Os e-mails não coincidem.");
-    if (!editId && (senha !== confirmaSenha)) return setErroCadastro("As senhas não coincidem.");
-
+    const erro = validarFormulario({ form, senha, confirmaSenha, editId });
+    if (erro) {
+      setErroCadastro(erro);
+      return;
+    }
     try {
       const { confirmarEmail, ...dadosParaSalvar } = form;
+      dadosParaSalvar.nome = dadosParaSalvar.nome.trim();
       dadosParaSalvar.email = dadosParaSalvar.email.toLowerCase();
 
       if (editId) {
@@ -149,12 +185,14 @@ export default function CadastroUsuario() {
 
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div className="w-full md:max-w-md flex items-center gap-3">
+            {/* Barra de pesquisa */}
             <BarraPesquisa pesquisa={pesquisa} setPesquisa={setPesquisa} placeholder="Nome, CPF, cargo, e-mail..." />
             {pesquisa !== pesquisaDebounced && <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />}
           </div>
           {!formAtivo && <BotaoCadastrar onClick={() => setFormAtivo(true)} label="Novo Usuário" />}
         </div>
 
+        {/* Formulário */}
         {formAtivo && (
           <section className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-blue-100 animate-in slide-in-from-top duration-300">
             <div className="flex items-center gap-3 mb-6">
@@ -162,10 +200,12 @@ export default function CadastroUsuario() {
               <h2 className="text-xl font-bold text-slate-800">{editId ? "Editar Usuário" : "Novo Usuário do Sistema"}</h2>
             </div>
 
+            {/* CPF */}
             <form onSubmit={cadastrar} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <InputCPF label="CPF" name="cpf" value={form.cpf} onChange={handleChange} required />
               <Input label="Nome Completo" name="nome" value={form.nome} onChange={handleChange} required />
 
+              {/* Status */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase ml-1">Status</label>
                 <select name="status" className="border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white outline-none transition-all" value={form.status} onChange={handleChange}>
@@ -174,9 +214,26 @@ export default function CadastroUsuario() {
                 </select>
               </div>
 
-              <Input label="E-mail" name="email" type="email" value={form.email} onChange={handleChange} required />
-              <Input label="Confirmar E-mail" name="confirmarEmail" type="email" value={form.confirmarEmail} onChange={handleChange} required />
+              {/* E-mail */}
+              <InputEmail
+                label="E-mail"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
 
+              {/* Confirmar E-mail */}
+              <InputEmail
+                label="Confirmar E-mail"
+                name="confirmarEmail"
+                value={form.confirmarEmail}
+                onChange={handleChange}
+                required
+                compareWith={form.email}
+              />
+
+              {/* Perfil */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase ml-1">Perfil de Acesso</label>
                 <select name="perfil" className="border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white outline-none transition-all" value={form.perfil} onChange={handleChange} required>
@@ -187,6 +244,7 @@ export default function CadastroUsuario() {
                 </select>
               </div>
 
+              {/* Cargo */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase ml-1">Cargo</label>
                 <select name="cargo" className="border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white outline-none transition-all" value={form.cargo} onChange={handleChange} required>
@@ -199,11 +257,26 @@ export default function CadastroUsuario() {
                 </select>
               </div>
 
-              <Input label={editId ? "Nova Senha (opcional)" : "Senha"} type="password" value={senha} onChange={(e) => setSenha(e.target.value)} required={!editId} />
-              <Input label="Confirme a Senha" type="password" value={confirmaSenha} onChange={(e) => setConfirmaSenha(e.target.value)} required={!editId} />
+              {/* Senha */}
+              <InputPassword
+                label={editId ? "Nova Senha (opcional)" : "Senha"}
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                required={!editId}
+              />
+
+              {/* Confirmar Senha */}
+              <InputPassword
+                label="Confirme a Senha"
+                value={confirmaSenha}
+                onChange={(e) => setConfirmaSenha(e.target.value)}
+                required={!editId}
+                compareWith={senha}
+              />
 
               {erroCadastro && <div className="col-span-full p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm font-bold text-center">{erroCadastro}</div>}
 
+              {/* Botão Salvar/Confirmar */}
               <div className="col-span-full flex gap-3 pt-6 border-t border-slate-100 mt-2">
                 <button type="submit" className="bg-blue-600 text-white rounded-xl flex items-center px-8 py-3 hover:bg-blue-700 transition-all shadow-md font-bold gap-2">
                   <MdSaveAlt size={20} /> {editId ? "Salvar Alterações" : "Confirmar Cadastro"}
@@ -216,6 +289,7 @@ export default function CadastroUsuario() {
           </section>
         )}
 
+        {/* Tabela de usuários */}
         <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
