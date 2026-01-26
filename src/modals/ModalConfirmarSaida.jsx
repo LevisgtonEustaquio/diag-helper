@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
-import { useAuth } from "../hooks/useAuth"; // 1. Importe o hook useAuth
+import { useAuth } from "../hooks/useAuth"; 
 
 export default function ModalConfirmarSaida({ aberto, onClose }) {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function ModalConfirmarSaida({ aberto, onClose }) {
   if (!aberto) return null;
 
   const handleSair = () => {
-    logout();      // 3. Isso vai limpar o estado (setUsuario(null)) E o localStorage
+    logout();      // Isso limpa o estado (setUsuario(null)) e o localStorage
     onClose();     // Fecha o modal
     navigate("/"); // Redireciona
   };
@@ -38,7 +38,7 @@ export default function ModalConfirmarSaida({ aberto, onClose }) {
           </button>
 
           <button
-            onClick={handleSair} // 4. Use a nova função tratada
+            onClick={handleSair} 
             className="px-5 py-2.5 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 shadow-lg shadow-red-200 transition-colors cursor-pointer"
           >
             Sair
