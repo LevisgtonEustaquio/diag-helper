@@ -1,6 +1,6 @@
 class APIClient {
   constructor() {
-    this.baseURL = import.meta.env.VITE_API_URL ?? 'https://diag-helper.onrender.com';
+    this.baseURL = import.meta.env.VITE_API_URL ?? 'https://diag-helper-api.onrender.com';
     this.defaultHeaders = {};
     this.logger = null;
   }
