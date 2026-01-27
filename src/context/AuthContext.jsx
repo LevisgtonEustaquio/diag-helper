@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
+
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(() => {
@@ -33,14 +34,33 @@ export function AuthProvider({ children }) {
     } catch {}
   };
 
+  // const hasPerfil = (perfisPermitidos) => {
+  //   if (!usuario) return false;
+  //   const perfil = usuario.perfil || usuario.role || usuario.tipoUsuario;
+  //   if (!perfil) return false;
+  //   return Array.isArray(perfisPermitidos)
+  //     ? perfisPermitidos.includes(perfil)
+  //     : true;
+  // };
+
   const hasPerfil = (perfisPermitidos) => {
     if (!usuario) return false;
-    const perfil = usuario.perfil || usuario.role || usuario.tipoUsuario;
-    if (!perfil) return false;
-    return Array.isArray(perfisPermitidos)
-      ? perfisPermitidos.includes(perfil)
-      : true;
-  };
+
+    // Pega o perfil do usuário e limpa (ex: de "Recepção" para "recepcao")
+    const perfilUsuario = (usuario.perfil || usuario.role || usuario.tipoUsuario || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    if (!perfilUsuario) return false;
+
+    // Limpa a lista de perfis permitidos e verifica se o usuário está nela
+    const perfisLimpis = perfisPermitidos.map(p => 
+        p.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    );
+
+    return perfisLimpis.includes(perfilUsuario);
+};
 
   const value = useMemo(
     () => ({ usuario, login, logout, hasPerfil }),

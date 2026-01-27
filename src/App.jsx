@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Cadastro from "./components/Cadastro";
 import Login from "./components/Login";
 import AdminSolicitacoesSenha from "./pages/AdminSolicitacoesSuporte";
 import CadastroPacientes from "./pages/CadastroPacientes";
@@ -14,7 +13,6 @@ import AnaliseExame from "./pages/AnaliseExame";
 import LogsAuditoria from "./pages/LogsAuditoria";
 import SolicitarSenha from "./pages/SolicitarSenha";
 import Suporte from "./pages/Suporte";
-import VisualizarImagens from "./pages/VisualizarImagens";
 
 import MainLayout from "./components/MainLayout";
 import PrivateRoute from "./components/PrivateRoute";
@@ -23,6 +21,11 @@ import "./index.css";
 
 function App() {
   const [expanded, setExpanded] = useState(true);
+
+  // Definição padronizada de grupos de acesso para facilitar manutenção
+  const ALL_USERS = ["administrador", "medico", "recepcao"];
+  const CLINICAL_STAFF = ["administrador", "medico"];
+  const ADMIN_ONLY = ["administrador"];
 
   return (
     <AuthProvider>
@@ -36,9 +39,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute
-              perfisPermitidos={["administrador", "medico", "recepcionista"]}
-            >
+            <PrivateRoute perfisPermitidos={ALL_USERS}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <Dashboard />
               </MainLayout>
@@ -47,20 +48,9 @@ function App() {
         />
 
         <Route
-          path="/Cadastro"
-          element={
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <Cadastro />
-            </MainLayout>
-          }
-        />
-
-        <Route
           path="/CadastroPacientes"
           element={
-            <PrivateRoute
-              perfisPermitidos={["administrador", "medico", "recepcionista"]}
-            >
+            <PrivateRoute perfisPermitidos={ALL_USERS}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <CadastroPacientes />
               </MainLayout>
@@ -71,10 +61,7 @@ function App() {
         <Route
           path="/CadastroExames"
           element={
-            <PrivateRoute
-              perfisPermitidos={["administrador", "medico", "recepcao"]}
-            >
-              {" "}
+            <PrivateRoute perfisPermitidos={ALL_USERS}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <CadastroExames />
               </MainLayout>
@@ -85,7 +72,7 @@ function App() {
         <Route
           path="/CadastroUsuario"
           element={
-            <PrivateRoute perfisPermitidos={["administrador"]}>
+            <PrivateRoute perfisPermitidos={ADMIN_ONLY}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <CadastroUsuario />
               </MainLayout>
@@ -94,18 +81,9 @@ function App() {
         />
 
         <Route
-          path="/VisualizarImagens"
-          element={
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <VisualizarImagens />
-            </MainLayout>
-          }
-        />
-
-        <Route
           path="/Laudo"
           element={
-            <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
+            <PrivateRoute perfisPermitidos={CLINICAL_STAFF}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <Laudo />
               </MainLayout>
@@ -116,7 +94,7 @@ function App() {
         <Route
           path="/laudos/analise/:id"
           element={
-            <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
+            <PrivateRoute perfisPermitidos={CLINICAL_STAFF}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <AnaliseExame />
               </MainLayout>
@@ -127,7 +105,7 @@ function App() {
         <Route
           path="/LogsAuditoria"
           element={
-            <PrivateRoute perfisPermitidos={["administrador"]}>
+            <PrivateRoute perfisPermitidos={ADMIN_ONLY}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <LogsAuditoria />
               </MainLayout>
@@ -138,7 +116,7 @@ function App() {
         <Route
           path="/AdminSolicitacoesSenha"
           element={
-            <PrivateRoute perfisPermitidos={["administrador"]}>
+            <PrivateRoute perfisPermitidos={ADMIN_ONLY}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <AdminSolicitacoesSenha />
               </MainLayout>
@@ -149,9 +127,7 @@ function App() {
         <Route
           path="/Configuracoes"
           element={
-            <PrivateRoute
-              perfisPermitidos={["administrador", "medico", "recepcionista"]}
-            >
+            <PrivateRoute perfisPermitidos={ALL_USERS}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
                 <Configuracoes />
               </MainLayout>

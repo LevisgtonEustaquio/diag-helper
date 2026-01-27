@@ -1,36 +1,50 @@
 import React, { useState } from "react";
 
-const formatarCPF = (value) => {
-  if (!value) return "";
-
-  return value
-    .replace(/\D/g, "")
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
-    .substring(0, 14);
-};
-
-const cpfValido = (cpf) => {
-  const apenasNumeros = cpf.replace(/\D/g, "");
-  return apenasNumeros.length === 11;
-};
-
-export default function InputCPF({ value, onChange, label, name, required }) {
+export default function InputPassword({
+  label,
+  value,
+  onChange,
+  required = false,
+  minLength = 6,
+  compareWith,
+  compareLabel = "As senhas não coincidem"
+}) {
   const [touched, setTouched] = useState(false);
 
   const handleChange = (e) => {
-    const valorFormatado = formatarCPF(e.target.value);
+    // não força lowercase em senha
+    const valor = e.target.value.trimStart();
 
     onChange({
       target: {
-        name,
-        value: valorFormatado
+        value: valor
       }
     });
   };
 
-  const invalido = touched && required && !cpfValido(value || "");
+  const senhaCurta = value && value.length < minLength;
+  const senhasDiferentes =
+    compareWith !== undefined &&
+    value &&
+    compareWith &&
+    value !== compareWith;
+
+  const invalido =
+    touched &&
+    (
+      (required && senhaCurta) ||
+      senhasDiferentes
+    );
+
+  const mensagemErro = () => {
+    if (senhaCurta) {
+      return `Senha deve ter no mínimo ${minLength} caracteres`;
+    }
+    if (senhasDiferentes) {
+      return compareLabel;
+    }
+    return "";
+  };
 
   return (
     <div className="flex flex-col w-full gap-1.5">
@@ -39,14 +53,10 @@ export default function InputCPF({ value, onChange, label, name, required }) {
       </label>
 
       <input
-        type="text"
-        name={name}
+        type="password"
         value={value}
         onChange={handleChange}
         onBlur={() => setTouched(true)}
-        placeholder="000.000.000-00"
-        maxLength={14}
-        inputMode="numeric"
         required={required}
         className={`border p-3 rounded-xl w-full bg-slate-50 focus:bg-white outline-none transition-all
           ${invalido
@@ -57,7 +67,7 @@ export default function InputCPF({ value, onChange, label, name, required }) {
 
       {invalido && (
         <span className="text-xs text-red-600 font-bold ml-1">
-          CPF inválido
+          {mensagemErro()}
         </span>
       )}
     </div>

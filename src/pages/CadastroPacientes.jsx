@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit, MdPersonAdd, MdSave } from "react-icons/md";
+import { MdDelete, MdEdit, MdPersonAdd, MdSave, MdCancel } from "react-icons/md";
 import BarraPesquisa from "../components/BarraPesquisa";
 import BotaoCadastrar from "../components/BotaoCadastrar";
 import PageWrapper from "../components/PageWrapper";
-// Importações para Auditoria
 import InputCPF from "../components/InputCPF";
 import InputTelefone from "../components/InputTelefone";
 import { useAuth } from "../context/AuthContext";
@@ -17,7 +16,7 @@ export default function CadastroPacientes() {
   const [pesquisaDebounced, setPesquisaDebounced] = useState("");
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [pacienteOriginal, setPacienteOriginal] = useState(null); // Para auditoria De/Para
+  const [pacienteOriginal, setPacienteOriginal] = useState(null);
 
   const [form, setForm] = useState({
     cpf: "",
@@ -26,38 +25,24 @@ export default function CadastroPacientes() {
     telefone: "",
   });
 
-  /* ===============================
-      BUSCAR DADOS (API)
-  =============================== */
   useEffect(() => {
     api
       .get("/pacientes")
       .then((res) => setPacientes(Array.isArray(res) ? res : []))
-      .catch(console.error);
+      .catch((err) => console.error("Erro ao carregar pacientes:", err));
   }, []);
 
-  /* ===============================
-      LÓGICA DE DEBOUNCE ⚡
-  =============================== */
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setPesquisaDebounced(pesquisa);
-    }, 300);
+    const handler = setTimeout(() => setPesquisaDebounced(pesquisa), 300);
     return () => clearTimeout(handler);
   }, [pesquisa]);
 
-  /* ===============================
-      FILTRAGEM
-  =============================== */
   const pacientesFiltrados =
     pacientes?.filter((p) => {
       const termo = pesquisaDebounced.toLowerCase();
       return p.nome?.toLowerCase().includes(termo) || p.cpf?.includes(termo);
     }) || [];
 
-  /* ===============================
-      AÇÕES DO FORMULÁRIO
-  =============================== */
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -71,78 +56,79 @@ export default function CadastroPacientes() {
 
   const salvarPaciente = async (e) => {
     e.preventDefault();
+    const nomeResponsavel = usuarioLogado?.nome || "Admin";
+
     try {
       if (editId) {
-        // --- LÓGICA DE AUDITORIA DETALHADA ---
+        // --- LÓGICA DE AUDITORIA DE/PARA ---
         const alteracoes = [];
-        for (let campo in form) {
-          if (campo === "id") continue;
+        const camposParaComparar = ["nome", "cpf", "dataNascimento", "telefone"];
 
-          const valorAntigo = pacienteOriginal[campo] || "Vazio";
-          const valorNovo = form[campo] || "Vazio";
+        camposParaComparar.forEach((campo) => {
+          const valorAntigo = String(pacienteOriginal[campo] || "Vazio").trim();
+          const valorNovo = String(form[campo] || "Vazio").trim();
 
           if (valorAntigo !== valorNovo) {
-            alteracoes.push(
-              `${campo.toUpperCase()}: "${valorAntigo}" → "${valorNovo}"`
-            );
+            alteracoes.push(`${campo.toUpperCase()}: "${valorAntigo}" → "${valorNovo}"`);
           }
-        }
+        });
 
         const res = await api.put(`/pacientes/${editId}`, form);
-        const atualizado = res;
+        
+        // Registro do Log de Edição
+        const detalhesTexto = alteracoes.length > 0 ? alteracoes.join(" | ") : "Nenhuma alteração detectada";
+        await registrarLog(nomeResponsavel, `Editou paciente: ${form.nome}`, "EDIÇÃO", detalhesTexto);
 
-        // Registra log apenas se houver mudanças reais
-        if (alteracoes.length > 0) {
-          const nomeUsuario = usuarioLogado?.nome || "Usuário";
-          await registrarLog(
-            nomeUsuario,
-            `Editou dados do paciente: ${form.nome}`,
-            "EDIÇÃO",
-            alteracoes.join(" | ")
-          );
-        }
-
-        setPacientes((prev) =>
-          prev.map((p) => (p.id === editId ? atualizado : p))
-        );
+        setPacientes((prev) => prev.map((p) => (p.id === editId ? res : p)));
       } else {
-        // O log de CADASTRO é feito automaticamente pelo interceptor do Axios
+        // Lógica de Cadastro Novo
         const res = await api.post("/pacientes", form);
         setPacientes((prev) => [...prev, res]);
+
+        // Registro do Log de Cadastro
+        await registrarLog(nomeResponsavel, `Cadastrou novo paciente: ${form.nome}`, "CADASTRO");
       }
       limparFormulario();
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao salvar paciente:", error);
     }
   };
 
   const editarPaciente = (paciente) => {
     setForm(paciente);
     setEditId(paciente.id);
-    setPacienteOriginal(paciente); // Salva o estado atual antes de começar a editar
+    setPacienteOriginal(paciente);
     setMostrarFormulario(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const removerPaciente = async (id) => {
-    if (window.confirm("Deseja realmente excluir este paciente?")) {
-      // O log de EXCLUSÃO é feito automaticamente pelo interceptor do Axios
-      await api.delete(`/pacientes/${id}`);
-      setPacientes((prev) => prev.filter((p) => p.id !== id));
+    const pacienteRemovido = pacientes.find((p) => p.id === id);
+    if (window.confirm(`Deseja realmente excluir o paciente ${pacienteRemovido?.nome}?`)) {
+      try {
+        await api.delete(`/pacientes/${id}`);
+        setPacientes((prev) => prev.filter((p) => p.id !== id));
+
+        // Registro do Log de Exclusão
+        const nomeResponsavel = usuarioLogado?.nome || "Admin";
+        await registrarLog(nomeResponsavel, `Excluiu paciente: ${pacienteRemovido?.nome}`, "EXCLUSÃO");
+      } catch (err) {
+        console.error("Erro ao remover paciente:", err);
+      }
     }
   };
 
   return (
     <PageWrapper title="Gestão de Pacientes">
       <div className="max-w-7xl mx-auto space-y-6 pb-10">
+        {/* Barra de Topo */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div className="w-full md:max-w-md flex items-center gap-2">
             <BarraPesquisa
               pesquisa={pesquisa}
               setPesquisa={setPesquisa}
-              placeholder="Digite para pesquisar..."
+              placeholder="Nome ou CPF..."
             />
-
             {pesquisa !== pesquisaDebounced && (
               <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
             )}
@@ -151,11 +137,12 @@ export default function CadastroPacientes() {
           {!mostrarFormulario && (
             <BotaoCadastrar
               onClick={() => setMostrarFormulario(true)}
-              label="Cadastrar Novo Paciente"
+              label="Novo Paciente"
             />
           )}
         </div>
 
+        {/* Formulário */}
         {mostrarFormulario && (
           <section className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-blue-100 animate-in slide-in-from-top duration-300">
             <div className="flex items-center gap-3 mb-6">
@@ -163,17 +150,14 @@ export default function CadastroPacientes() {
                 <MdPersonAdd size={24} />
               </div>
               <h2 className="text-xl font-bold text-slate-800">
-                {editId ? "Atualizar Cadastro" : "Cadastro de Novo Paciente"}
+                {editId ? "Atualizar Cadastro" : "Novo Paciente"}
               </h2>
             </div>
 
-            <form
-              onSubmit={salvarPaciente}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
+            <form onSubmit={salvarPaciente} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InputCPF
-                label="CPF do Usuário"
-                name="cpf" // Importante para o seu state dinâmico { ...form, [name]: value }
+                label="CPF"
+                name="cpf"
                 value={form.cpf}
                 onChange={handleChange}
                 required
@@ -202,28 +186,29 @@ export default function CadastroPacientes() {
               <div className="col-span-full flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 mt-2">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-md"
                 >
-                  <MdSave size={20} />{" "}
+                  <MdSave size={20} />
                   {editId ? "Salvar Alterações" : "Confirmar Cadastro"}
                 </button>
                 <button
                   type="button"
                   onClick={limparFormulario}
-                  className="bg-slate-100 text-slate-600 px-8 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all"
+                  className="bg-slate-100 text-slate-600 px-8 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all flex items-center justify-center gap-2"
                 >
-                  Cancelar
+                  <MdCancel size={20} /> Cancelar
                 </button>
               </div>
             </form>
           </section>
         )}
 
+        {/* Tabela */}
         <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase">
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
                   <Th>Dados do Paciente</Th>
                   <Th className="hidden md:table-cell">Data de Nascimento</Th>
                   <Th className="hidden sm:table-cell">Contato</Th>
@@ -232,10 +217,7 @@ export default function CadastroPacientes() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {pacientesFiltrados.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="hover:bg-blue-50/30 transition-colors"
-                  >
+                  <tr key={p.id} className="hover:bg-blue-50/30 transition-colors group">
                     <Td>
                       <div className="font-bold text-slate-800">{p.nome}</div>
                       <div className="text-xs text-slate-500 font-mono bg-slate-100 w-fit px-1.5 py-0.5 rounded mt-1">
@@ -247,20 +229,20 @@ export default function CadastroPacientes() {
                         ? new Date(p.dataNascimento).toLocaleDateString("pt-BR")
                         : "-"}
                     </Td>
-                    <Td className="hidden sm:table-cell">
-                      {p.telefone || "-"}
-                    </Td>
+                    <Td className="hidden sm:table-cell">{p.telefone || "-"}</Td>
                     <Td className="text-right">
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => editarPaciente(p)}
                           className="p-2.5 text-blue-600 hover:bg-blue-100 rounded-xl transition-all"
+                          title="Editar"
                         >
                           <MdEdit size={20} />
                         </button>
                         <button
                           onClick={() => removerPaciente(p.id)}
                           className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                          title="Excluir"
                         >
                           <MdDelete size={20} />
                         </button>
@@ -281,9 +263,7 @@ export default function CadastroPacientes() {
 function Input({ label, type = "text", name, ...props }) {
   return (
     <div className="flex flex-col w-full gap-1.5">
-      <label className="text-xs font-bold text-slate-500 uppercase ml-1">
-        {label}
-      </label>
+      <label className="text-xs font-bold text-slate-500 uppercase ml-1">{label}</label>
       <input
         type={type}
         name={name}
@@ -294,9 +274,11 @@ function Input({ label, type = "text", name, ...props }) {
     </div>
   );
 }
+
 function Th({ children, className = "" }) {
-  return <th className={`px-6 py-4 font-bold ${className}`}>{children}</th>;
+  return <th className={`px-6 py-4 ${className}`}>{children}</th>;
 }
+
 function Td({ children, className = "" }) {
   return <td className={`px-6 py-4 align-middle ${className}`}>{children}</td>;
 }

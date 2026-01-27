@@ -14,8 +14,8 @@ import {
 } from "react-icons/md";
 import { jsPDF } from "jspdf";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
-import { registrarLog } from "../services/auditService"; // Importação do Log
+import { useAuth } from "../hooks/useAuth";
+import { registrarLog } from "../services/auditService";
 import ModalErro from "../modals/ModalErro";
 import ModalAviso from "../modals/ModalAviso";
 
@@ -74,10 +74,26 @@ export default function AnaliseExame() {
 
   const simularIA = () => {
     const resultados = [
-      "A análise preliminar via IA sugere padrões de normalidade nos tecidos observados, com leve desvio nos índices hematológicos. Recomenda-se correlação clínica.",
-      "Identificada presença de infiltrado inflamatório linfocitário moderado. Sugere-se investigação para processos crônicos ou infecciosos específicos.",
-      "Morfologia celular preservada. Não foram detectadas atipias significativas nas lâminas analisadas pela rede neural.",
-      "Detectada alteração na densidade celular em regiões focais. Recomenda-se nova coleta ou análise imuno-histoquímica para complementação.",
+      "A análise automatizada indica padrão histológico compatível com tecido saudável, sem evidências de alterações estruturais relevantes.",
+      "Foram observadas variações discretas na arquitetura celular, sem critérios suficientes para caracterização de processo patológico.",
+      "A leitura assistida por IA aponta estabilidade nos marcadores analisados, sugerindo ausência de atividade inflamatória significativa.",
+      "Identificada leve desorganização tecidual em áreas pontuais, possivelmente associada a processo reacional inespecífico.",
+      "Os achados morfológicos são compatíveis com tecido de aspecto preservado, sem sinais de malignidade detectáveis.",
+      "Detectada discreta hipercelularidade em campos isolados, recomendando-se acompanhamento clínico conforme correlação laboratorial.",
+      "A avaliação computacional não identificou padrões compatíveis com neoplasia ou displasia nas amostras examinadas.",
+      "Observa-se presença de infiltrado inflamatório leve, com predomínio de células mononucleares, de provável caráter benigno.",
+      "A análise das lâminas sugere integridade da matriz extracelular, sem evidências de fibrose significativa.",
+      "Foram identificadas alterações morfológicas sutis, sem impacto diagnóstico definido no contexto atual.",
+      "A rede neural aponta padrão compatível com processo inflamatório em fase inicial, sugerindo monitoramento evolutivo.",
+      "Não foram observados sinais de necrose ou apoptose acentuada nos tecidos avaliados.",
+      "A distribuição celular apresenta-se homogênea, com limites histológicos bem definidos.",
+      "Detectada discreta variação nos núcleos celulares, sem características de atipia significativa.",
+      "A análise integrada indica baixa probabilidade de processo patológico ativo no material examinado.",
+      "Os achados sugerem tecido em estado funcional preservado, sem alterações degenerativas relevantes.",
+      "Identificada leve congestão vascular em áreas restritas, possivelmente relacionada a fatores transitórios.",
+      "A avaliação por IA não evidenciou padrões compatíveis com processos infecciosos específicos.",
+      "Foram observados achados inespecíficos que não permitem conclusão diagnóstica isolada.",
+      "A análise histopatológica assistida sugere quadro estável, recomendando-se correlação com dados clínicos do paciente.",
     ];
     return resultados[Math.floor(Math.random() * resultados.length)];
   };
